@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="main_drawer_weather">Погода</string>
+    <string name="main_drawer_settings">Настройки</string>
+    <string name="main_drawer_about">О приложении</string>
+
+    <string name="info">Приложение, показывающее погоду. Сделано Данилом Кашиным в рамках домашнего задания для проекта Яндекс.Мобилизация 2017</string>
+
+    <string name="weather_screen">Экран Погоды</string>
+</resources>

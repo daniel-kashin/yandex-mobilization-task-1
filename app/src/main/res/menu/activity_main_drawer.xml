@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/navigation_weather"
+            android:icon="@drawable/ic_weather"
+            android:title="@string/main_drawer_weather"/>
+        <item
+            android:id="@+id/navigation_settings"
+            android:icon="@drawable/ic_settings"
+            android:title="@string/main_drawer_settings"/>
+        <item
+            android:id="@+id/navigation_about"
+            android:icon="@drawable/ic_about"
+            android:title="@string/main_drawer_about"/>
+    </group>
+
+</menu>
