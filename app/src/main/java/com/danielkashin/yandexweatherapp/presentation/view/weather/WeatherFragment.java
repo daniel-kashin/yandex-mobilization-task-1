@@ -1,5 +1,6 @@
 package com.danielkashin.yandexweatherapp.presentation.view.weather;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import com.danielkashin.yandexweatherapp.R;
@@ -22,10 +23,10 @@ public class WeatherFragment extends PresenterFragment<WeatherPresenter, IWeathe
   // -------------------------------------- lifecycle ---------------------------------------------
 
   @Override
-  public void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
+  public void onAttach(Context context) {
+    super.onAttach(context);
 
-    if (!(getActivity() instanceof ITitleContainer)) {
+    if (!(context instanceof ITitleContainer)) {
       throw new IllegalStateException("Activity must be an instance of ITitleContainer");
     }
   }

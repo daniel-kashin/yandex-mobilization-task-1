@@ -1,7 +1,9 @@
 package com.danielkashin.yandexweatherapp.presentation.view.about;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,10 +22,10 @@ public class AboutFragment extends Fragment {
   // -------------------------------------- lifecycle ---------------------------------------------
 
   @Override
-  public void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
+  public void onAttach(Context context) {
+    super.onAttach(context);
 
-    if (!(getActivity() instanceof ITitleContainer)) {
+    if (!(context instanceof ITitleContainer)) {
       throw new IllegalStateException("Activity must be an instance of ITitleContainer");
     }
   }

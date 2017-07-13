@@ -20,7 +20,7 @@ import com.danielkashin.yandexweatherapp.presentation.view.settings.SettingsFrag
 import com.danielkashin.yandexweatherapp.presentation.view.weather.WeatherFragment;
 
 
-@SuppressWarnings("FieldCanBeLocal")
+@SuppressWarnings("FieldCanBeLocal") // view fields are quite often useful in the whole activity scope
 public class MainDrawerActivity extends AppCompatActivity
     implements NavigationView.OnNavigationItemSelectedListener, ITitleContainer {
 
