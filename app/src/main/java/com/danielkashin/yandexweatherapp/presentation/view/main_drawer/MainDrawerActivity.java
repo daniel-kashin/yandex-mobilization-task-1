@@ -22,18 +22,17 @@ import com.danielkashin.yandexweatherapp.presentation.view.settings.SettingsFrag
 import com.danielkashin.yandexweatherapp.presentation.view.weather.WeatherFragment;
 
 
-@SuppressWarnings("FieldCanBeLocal")
-// view fields are quite often useful in the whole activity scope
+@SuppressWarnings("FieldCanBeLocal")// view fields are quite often useful in the whole activity scope
 public class MainDrawerActivity extends AppCompatActivity
     implements NavigationView.OnNavigationItemSelectedListener, TitleContainer {
 
-  private TextView mTextToolbar;
-  private Toolbar mToolbar;
-  private DrawerLayout mDrawerLayout;
-  private NavigationView mNavigationView;
-  private ActionBarDrawerToggle mDrawerToggle;
+  private TextView textToolbar;
+  private Toolbar toolbar;
+  private DrawerLayout drawerLayout;
+  private NavigationView navigationView;
+  private ActionBarDrawerToggle drawerToggle;
 
-  private boolean mToolbarNavigationListenerIsRegistered;
+  private boolean toolbarNavigationListenerIsRegistered;
 
   // ---------------------------------------- lifecycle -------------------------------------------
 
@@ -57,8 +56,8 @@ public class MainDrawerActivity extends AppCompatActivity
 
   @Override
   public void onBackPressed() {
-    if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
-      mDrawerLayout.closeDrawer(GravityCompat.START);
+    if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+      drawerLayout.closeDrawer(GravityCompat.START);
     } else {
       super.onBackPressed();
     }
@@ -67,7 +66,7 @@ public class MainDrawerActivity extends AppCompatActivity
   @Override
   public void onConfigurationChanged(Configuration newConfig) {
     super.onConfigurationChanged(newConfig);
-    mDrawerToggle.onConfigurationChanged(newConfig);
+    drawerToggle.onConfigurationChanged(newConfig);
   }
 
   @Override
@@ -85,7 +84,7 @@ public class MainDrawerActivity extends AppCompatActivity
       default:
         throw new IllegalStateException("Unknown navigation item");
     }
-    mDrawerLayout.closeDrawer(GravityCompat.START);
+    drawerLayout.closeDrawer(GravityCompat.START);
     return true;
   }
 
@@ -93,14 +92,14 @@ public class MainDrawerActivity extends AppCompatActivity
 
   @Override
   public void setTitle(String titleText) {
-    mTextToolbar.setText(titleText);
+    textToolbar.setText(titleText);
   }
 
   // ----------------------------------------- private --------------------------------------------
 
   private void openDefaultFragment() {
     addFragment(WeatherFragment.newInstance(), false);
-    mNavigationView.setCheckedItem(R.id.navigation_weather);
+    navigationView.setCheckedItem(R.id.navigation_weather);
   }
 
   private void addFragment(Fragment fragment, boolean addToBackStack) {
@@ -120,19 +119,19 @@ public class MainDrawerActivity extends AppCompatActivity
   }
 
   private void initializeView() {
-    mToolbar = (Toolbar) findViewById(R.id.toolbar);
-    mToolbar.setTitle("");
-    mTextToolbar = (TextView) findViewById(R.id.text_toolbar);
-    setSupportActionBar(mToolbar);
+    toolbar = (Toolbar) findViewById(R.id.toolbar);
+    toolbar.setTitle("");
+    textToolbar = (TextView) findViewById(R.id.text_toolbar);
+    setSupportActionBar(toolbar);
 
-    mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-    mDrawerToggle = new ActionBarDrawerToggle(
-        this, mDrawerLayout, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-    mDrawerLayout.addDrawerListener(mDrawerToggle);
-    mDrawerToggle.syncState();
+    drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+    drawerToggle = new ActionBarDrawerToggle(
+        this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+    drawerLayout.addDrawerListener(drawerToggle);
+    drawerToggle.syncState();
 
-    mNavigationView = (NavigationView) findViewById(R.id.navigation_view);
-    mNavigationView.setNavigationItemSelectedListener(this);
+    navigationView = (NavigationView) findViewById(R.id.navigation_view);
+    navigationView.setNavigationItemSelectedListener(this);
 
     getSupportFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
       @Override
@@ -148,11 +147,11 @@ public class MainDrawerActivity extends AppCompatActivity
     Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
     if (currentFragment != null) {
       if (currentFragment instanceof WeatherFragment) {
-        mNavigationView.setCheckedItem(R.id.navigation_weather);
+        navigationView.setCheckedItem(R.id.navigation_weather);
       } else if (currentFragment instanceof SettingsFragment) {
-        mNavigationView.setCheckedItem(R.id.navigation_settings);
+        navigationView.setCheckedItem(R.id.navigation_settings);
       } else if (currentFragment instanceof AboutFragment) {
-        mNavigationView.setCheckedItem(R.id.navigation_about);
+        navigationView.setCheckedItem(R.id.navigation_about);
       } else {
         throw new IllegalStateException("Unknown fragment in navigation view");
       }
@@ -164,22 +163,22 @@ public class MainDrawerActivity extends AppCompatActivity
       int backStackEntryCount = getSupportFragmentManager().getBackStackEntryCount();
       if (backStackEntryCount == 0) {
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        mDrawerToggle.setDrawerIndicatorEnabled(true);
+        drawerToggle.setDrawerIndicatorEnabled(true);
 
-        mToolbarNavigationListenerIsRegistered = false;
+        toolbarNavigationListenerIsRegistered = false;
       } else {
-        mDrawerToggle.setDrawerIndicatorEnabled(false);
+        drawerToggle.setDrawerIndicatorEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        if (!mToolbarNavigationListenerIsRegistered) {
-          mDrawerToggle.setToolbarNavigationClickListener(new View.OnClickListener() {
+        if (!toolbarNavigationListenerIsRegistered) {
+          drawerToggle.setToolbarNavigationClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
               onBackPressed();
             }
           });
 
-          mToolbarNavigationListenerIsRegistered = true;
+          toolbarNavigationListenerIsRegistered = true;
         }
       }
     }

@@ -13,10 +13,10 @@ import com.danielkashin.yandexweatherapp.presentation.presenter.base.PresenterLo
 public abstract class PresenterActivity<P extends BasicPresenter<V>, V extends PresenterView>
     extends AppCompatActivity implements PresenterView, LoaderManager.LoaderCallbacks<P> {
 
-  private P mPresenter;
+  private P presenter;
 
   protected final BasicPresenter<V> getPresenter() {
-    return mPresenter;
+    return presenter;
   }
 
   // -------------------------------------- lifecycle ---------------------------------------------
@@ -29,11 +29,11 @@ public abstract class PresenterActivity<P extends BasicPresenter<V>, V extends P
     // loader is created -> get presenter
     Loader<P> loader = getSupportLoaderManager().getLoader(getActivityId());
     if (loader != null) {
-      mPresenter = ((PresenterLoader<P, V>) loader).getPresenter();
+      presenter = ((PresenterLoader<P, V>) loader).getPresenter();
     }
 
     // init loader
-    if (mPresenter == null) {
+    if (presenter == null) {
       getSupportLoaderManager().initLoader(getActivityId(), null, this);
     }
 
@@ -43,12 +43,12 @@ public abstract class PresenterActivity<P extends BasicPresenter<V>, V extends P
   @Override
   protected void onStart() {
     super.onStart();
-    mPresenter.attachView(getViewInterface());
+    presenter.attachView(getViewInterface());
   }
 
   @Override
   protected void onStop() {
-    mPresenter.detachView();
+    presenter.detachView();
     super.onStop();
   }
 
@@ -61,12 +61,12 @@ public abstract class PresenterActivity<P extends BasicPresenter<V>, V extends P
 
   @Override
   public void onLoadFinished(Loader<P> loader, P presenter) {
-    mPresenter = presenter;
+    this.presenter = presenter;
   }
 
   @Override
   public void onLoaderReset(Loader<P> loader) {
-    this.mPresenter = null;
+    this.presenter = null;
   }
 
   // --------------------------------------- abstract ---------------------------------------------

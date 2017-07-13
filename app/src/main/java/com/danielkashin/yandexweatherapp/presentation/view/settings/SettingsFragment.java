@@ -9,7 +9,6 @@ import com.danielkashin.yandexweatherapp.presentation.view.main_drawer.TitleCont
 
 public class SettingsFragment extends PreferenceFragmentCompat {
 
-
   // ------------------------------------- newInstance --------------------------------------------
 
   public static SettingsFragment newInstance() {
