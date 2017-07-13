@@ -1,4 +1,4 @@
-package com.danielkashin.yandexweatherapp.view.about;
+package com.danielkashin.yandexweatherapp.presentation.view.about;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -6,14 +6,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.danielkashin.yandexweatherapp.R;
-import com.danielkashin.yandexweatherapp.view.main_drawer.ITitleContainer;
+import com.danielkashin.yandexweatherapp.presentation.view.main_drawer.ITitleContainer;
 
 
 public class AboutFragment extends Fragment {
 
-  public static AboutFragment getInstance() {
+  // ------------------------------------- newInstance --------------------------------------------
+
+  public static AboutFragment newInstance() {
     return new AboutFragment();
   }
+
+  // -------------------------------------- lifecycle ---------------------------------------------
 
   @Override
   public void onCreate(Bundle savedInstanceState) {

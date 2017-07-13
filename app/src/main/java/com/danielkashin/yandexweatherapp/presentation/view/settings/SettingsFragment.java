@@ -1,16 +1,21 @@
-package com.danielkashin.yandexweatherapp.view.settings;
+package com.danielkashin.yandexweatherapp.presentation.view.settings;
 
 import android.os.Bundle;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import com.danielkashin.yandexweatherapp.R;
-import com.danielkashin.yandexweatherapp.view.main_drawer.ITitleContainer;
+import com.danielkashin.yandexweatherapp.presentation.view.main_drawer.ITitleContainer;
 
 
 public class SettingsFragment extends PreferenceFragmentCompat {
 
-  public static SettingsFragment getInstance() {
+
+  // ------------------------------------- newInstance --------------------------------------------
+
+  public static SettingsFragment newInstance() {
     return new SettingsFragment();
   }
+
+  // -------------------------------------- lifecycle ---------------------------------------------
 
   @Override
   public void onCreate(Bundle savedInstanceState) {

@@ -1,4 +1,4 @@
-package com.danielkashin.yandexweatherapp.view.main_drawer;
+package com.danielkashin.yandexweatherapp.presentation.view.main_drawer;
 
 
 public interface ITitleContainer {
