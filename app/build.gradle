@@ -1,5 +1,8 @@
 apply plugin: 'com.android.application'
 
+def keystoreProperties = new Properties()
+keystoreProperties.load(new FileInputStream(rootProject.file("keystore.properties")))
+
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.3"
@@ -16,6 +19,11 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    buildTypes.each {
+        it.buildConfigField 'String', 'WEATHER_API_KEY', keystoreProperties['WeatherApiKey'];
+        it.buildConfigField 'String', 'WEATHER_DATABASE_NAME', keystoreProperties['WeatherDatabaseName'];
+        it.buildConfigField 'Integer', 'WEATHER_DATABASE_BUILD_NUMBER', keystoreProperties['WeatherDatabaseBuildNumber'];
     }
 }
 
