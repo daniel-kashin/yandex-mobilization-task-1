@@ -1,13 +1,13 @@
 package com.danielkashin.yandexweatherapp.presentation.presenter.weather;
 
-import com.danielkashin.yandexweatherapp.presentation.presenter.base.Presenter;
-import com.danielkashin.yandexweatherapp.presentation.view.weather.IWeatherView;
+import com.danielkashin.yandexweatherapp.presentation.presenter.base.BasicPresenter;
+import com.danielkashin.yandexweatherapp.presentation.view.weather.IWeatherPresenterView;
 
 
-public class WeatherPresenter extends Presenter<IWeatherView> {
+public class WeatherBasicPresenter extends BasicPresenter<IWeatherPresenterView> {
 
 
-  public WeatherPresenter() {
+  public WeatherBasicPresenter() {
 
   }
 

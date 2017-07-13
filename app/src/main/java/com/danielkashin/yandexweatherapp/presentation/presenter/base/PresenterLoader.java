@@ -2,20 +2,20 @@ package com.danielkashin.yandexweatherapp.presentation.presenter.base;
 
 import android.content.Context;
 import android.support.v4.content.Loader;
-import com.danielkashin.yandexweatherapp.presentation.view.base.IView;
+import com.danielkashin.yandexweatherapp.presentation.view.base.PresenterView;
 
 
-public class PresenterLoader<P extends Presenter<V>, V extends IView> extends Loader<P> {
+public class PresenterLoader<P extends BasicPresenter<V>, V extends PresenterView> extends Loader<P> {
 
-  private final IPresenterFactory<P, V> factory;
+  private final PresenterFactory<P, V> factory;
   private P presenter;
 
 
-  public PresenterLoader(Context context, IPresenterFactory<P, V> factory) {
+  public PresenterLoader(Context context, PresenterFactory<P, V> factory) {
     super(context);
 
     if (factory == null) {
-      throw new IllegalStateException("Presenter factory must be non null");
+      throw new IllegalStateException("BasicPresenter factory must be non null");
     }
 
     this.factory = factory;

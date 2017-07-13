@@ -1,7 +1,7 @@
 package com.danielkashin.yandexweatherapp.presentation.view.main_drawer;
 
 
-public interface ITitleContainer {
+public interface TitleContainer {
 
   void setTitle(String titleText);
 

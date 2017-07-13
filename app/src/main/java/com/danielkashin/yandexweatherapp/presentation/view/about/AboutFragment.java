@@ -3,12 +3,11 @@ package com.danielkashin.yandexweatherapp.presentation.view.about;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.danielkashin.yandexweatherapp.R;
-import com.danielkashin.yandexweatherapp.presentation.view.main_drawer.ITitleContainer;
+import com.danielkashin.yandexweatherapp.presentation.view.main_drawer.TitleContainer;
 
 
 public class AboutFragment extends Fragment {
@@ -25,8 +24,8 @@ public class AboutFragment extends Fragment {
   public void onAttach(Context context) {
     super.onAttach(context);
 
-    if (!(context instanceof ITitleContainer)) {
-      throw new IllegalStateException("Activity must be an instance of ITitleContainer");
+    if (!(context instanceof TitleContainer)) {
+      throw new IllegalStateException("Activity must be an instance of TitleContainer");
     }
   }
 
@@ -39,7 +38,7 @@ public class AboutFragment extends Fragment {
   @Override
   public void onStart() {
     super.onStart();
-    ((ITitleContainer)getActivity()).setTitle(getString(R.string.main_drawer_about));
+    ((TitleContainer)getActivity()).setTitle(getString(R.string.main_drawer_about));
   }
 
 }

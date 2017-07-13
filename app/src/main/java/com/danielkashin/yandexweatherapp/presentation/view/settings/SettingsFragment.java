@@ -4,7 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import com.danielkashin.yandexweatherapp.R;
-import com.danielkashin.yandexweatherapp.presentation.view.main_drawer.ITitleContainer;
+import com.danielkashin.yandexweatherapp.presentation.view.main_drawer.TitleContainer;
 
 
 public class SettingsFragment extends PreferenceFragmentCompat {
@@ -22,15 +22,15 @@ public class SettingsFragment extends PreferenceFragmentCompat {
   public void onAttach(Context context) {
     super.onAttach(context);
 
-    if (!(context instanceof ITitleContainer)) {
-      throw new IllegalStateException("Activity must be an instance of ITitleContainer");
+    if (!(context instanceof TitleContainer)) {
+      throw new IllegalStateException("Activity must be an instance of TitleContainer");
     }
   }
 
   @Override
   public void onStart() {
     super.onStart();
-    ((ITitleContainer) getActivity()).setTitle(getString(R.string.main_drawer_settings));
+    ((TitleContainer) getActivity()).setTitle(getString(R.string.main_drawer_settings));
   }
 
   @Override

@@ -5,19 +5,18 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import com.danielkashin.yandexweatherapp.presentation.presenter.base.IPresenterFactory;
-import com.danielkashin.yandexweatherapp.presentation.presenter.base.Presenter;
+import com.danielkashin.yandexweatherapp.presentation.presenter.base.PresenterFactory;
+import com.danielkashin.yandexweatherapp.presentation.presenter.base.BasicPresenter;
 import com.danielkashin.yandexweatherapp.presentation.presenter.base.PresenterLoader;
 
 
-public abstract class PresenterFragment<P extends Presenter<V>, V extends IView>
-    extends Fragment implements IView, LoaderManager.LoaderCallbacks<P> {
+public abstract class PresenterFragment<P extends BasicPresenter<V>, V extends PresenterView>
+    extends Fragment implements PresenterView, LoaderManager.LoaderCallbacks<P> {
 
   private P mPresenter;
 
-  protected final Presenter<V> getPresenter() {
+  protected final BasicPresenter<V> getPresenter() {
     return mPresenter;
   }
 
@@ -42,13 +41,13 @@ public abstract class PresenterFragment<P extends Presenter<V>, V extends IView>
   }
 
   @Override
-  public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
+  public android.view.View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
     super.onCreateView(inflater, parent, savedInstanceState);
     return inflater.inflate(getLayoutRes(), parent, false);
   }
 
   @Override
-  public final void onViewCreated(View view, Bundle savedInstanceState) {
+  public final void onViewCreated(android.view.View view, Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     initializeView(view);
   }
@@ -86,12 +85,12 @@ public abstract class PresenterFragment<P extends Presenter<V>, V extends IView>
 
   protected abstract V getViewInterface();
 
-  protected abstract IPresenterFactory<P, V> getPresenterFactory();
+  protected abstract PresenterFactory<P, V> getPresenterFactory();
 
   protected abstract int getFragmentId();
 
   protected abstract int getLayoutRes();
 
-  protected abstract void initializeView(View view);
+  protected abstract void initializeView(android.view.View view);
 
 }

@@ -6,16 +6,16 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 
-import com.danielkashin.yandexweatherapp.presentation.presenter.base.IPresenterFactory;
-import com.danielkashin.yandexweatherapp.presentation.presenter.base.Presenter;
+import com.danielkashin.yandexweatherapp.presentation.presenter.base.BasicPresenter;
+import com.danielkashin.yandexweatherapp.presentation.presenter.base.PresenterFactory;
 import com.danielkashin.yandexweatherapp.presentation.presenter.base.PresenterLoader;
 
-public abstract class PresenterActivity<P extends Presenter<V>, V extends IView>
-    extends AppCompatActivity implements IView, LoaderManager.LoaderCallbacks<P> {
+public abstract class PresenterActivity<P extends BasicPresenter<V>, V extends PresenterView>
+    extends AppCompatActivity implements PresenterView, LoaderManager.LoaderCallbacks<P> {
 
   private P mPresenter;
 
-  protected final Presenter<V> getPresenter() {
+  protected final BasicPresenter<V> getPresenter() {
     return mPresenter;
   }
 
@@ -73,7 +73,7 @@ public abstract class PresenterActivity<P extends Presenter<V>, V extends IView>
 
   protected abstract V getViewInterface();
 
-  protected abstract IPresenterFactory<P, V> getPresenterFactory();
+  protected abstract PresenterFactory<P, V> getPresenterFactory();
 
   protected abstract int getActivityId();
 

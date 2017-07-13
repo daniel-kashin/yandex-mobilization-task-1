@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -22,7 +21,7 @@ import com.danielkashin.yandexweatherapp.presentation.view.weather.WeatherFragme
 
 @SuppressWarnings("FieldCanBeLocal") // view fields are quite often useful in the whole activity scope
 public class MainDrawerActivity extends AppCompatActivity
-    implements NavigationView.OnNavigationItemSelectedListener, ITitleContainer {
+    implements NavigationView.OnNavigationItemSelectedListener, TitleContainer {
 
   private TextView mTextToolbar;
   private Toolbar mToolbar;
@@ -67,21 +66,24 @@ public class MainDrawerActivity extends AppCompatActivity
 
   @Override
   public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-    int id = item.getItemId();
-    if (id == R.id.navigation_weather) {
-      addFragment(WeatherFragment.newInstance());
-    } else if (id == R.id.navigation_settings) {
-      addFragment(SettingsFragment.newInstance());
-    } else if (id == R.id.navigation_about) {
-      addFragment(AboutFragment.newInstance());
-    } else {
-      throw new IllegalStateException("Unknown navigation item");
+    switch(item.getItemId()) {
+      case R.id.navigation_weather:
+        addFragment(WeatherFragment.newInstance());
+        break;
+      case R.id.navigation_settings:
+        addFragment(SettingsFragment.newInstance());
+        break;
+      case R.id.navigation_about:
+        addFragment(AboutFragment.newInstance());
+        break;
+      default:
+        throw new IllegalStateException("Unknown navigation item");
     }
     mDrawerLayout.closeDrawer(GravityCompat.START);
     return true;
   }
 
-  // ------------------------------------- ITitleContainer ----------------------------------------
+  // ------------------------------------- TitleContainer ----------------------------------------
 
   @Override
   public void setTitle(String titleText) {

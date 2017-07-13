@@ -1,6 +1,6 @@
 package com.danielkashin.yandexweatherapp.presentation.view.base;
 
 
-public interface IView {
+public interface PresenterView {
 
 }
