@@ -2,16 +2,16 @@ package com.danielkashin.yandexweatherapp.presentation.view.weather;
 
 import android.content.Context;
 import android.view.View;
+
 import com.danielkashin.yandexweatherapp.R;
 import com.danielkashin.yandexweatherapp.presentation.presenter.base.PresenterFactory;
-import com.danielkashin.yandexweatherapp.presentation.presenter.weather.WeatherBasicPresenter;
+import com.danielkashin.yandexweatherapp.presentation.presenter.weather.WeatherPresenter;
 import com.danielkashin.yandexweatherapp.presentation.view.base.PresenterFragment;
 import com.danielkashin.yandexweatherapp.presentation.view.main_drawer.TitleContainer;
 
 
-public class WeatherFragment extends PresenterFragment<WeatherBasicPresenter, IWeatherPresenterView>
-    implements IWeatherPresenterView {
-
+public class WeatherFragment extends PresenterFragment<WeatherPresenter, WeatherView>
+    implements WeatherView {
 
   // ------------------------------------- newInstance --------------------------------------------
 
@@ -39,13 +39,13 @@ public class WeatherFragment extends PresenterFragment<WeatherBasicPresenter, IW
   // --------------------------------------- BaseFragment -----------------------------------------
 
   @Override
-  protected IWeatherPresenterView getViewInterface() {
+  protected WeatherView getViewInterface() {
     return this;
   }
 
   @Override
-  protected PresenterFactory<WeatherBasicPresenter, IWeatherPresenterView> getPresenterFactory() {
-    return null;
+  protected PresenterFactory<WeatherPresenter, WeatherView> getPresenterFactory() {
+    return new WeatherPresenter.Factory();
   }
 
   @Override
