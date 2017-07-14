@@ -12,7 +12,7 @@ import static com.danielkashin.yandexweatherapp.data.constants.Endpoints.KEY_V2_
 
 public interface OpenWeatherMapContract {
 
-  @POST(OPEN_WEATHER_MAP_BASE_URL + KEY_DATA + KEY_WEATHER + KEY_V2_5)
+  @POST(KEY_DATA + KEY_WEATHER + KEY_V2_5)
   Call<NetworkWeather> getWeather(
       @Query("q") String city,
       @Query("APPID") String apiId

@@ -9,15 +9,15 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public abstract class BaseNetworkService<S> {
 
-  private final String baseUrl;
+  private final String apiKey;
 
   private S dataService;
 
 
-  public BaseNetworkService(String baseUrl, OkHttpClient okHttpClient){
-    ExceptionHelper.checkAllObjectsNonNull(baseUrl, okHttpClient);
+  public BaseNetworkService(String baseUrl, String apiKey, OkHttpClient okHttpClient){
+    ExceptionHelper.checkAllObjectsNonNull(baseUrl, apiKey, okHttpClient);
 
-    this.baseUrl = baseUrl;
+    this.apiKey = apiKey;
 
     Retrofit retrofit = new Retrofit.Builder()
         .baseUrl(baseUrl)
@@ -32,8 +32,8 @@ public abstract class BaseNetworkService<S> {
     return this.dataService;
   }
 
-  protected String getBaseUrl() {
-    return baseUrl;
+  protected String getApiKey() {
+    return apiKey;
   }
 
   protected abstract S createService(Retrofit retrofit);
