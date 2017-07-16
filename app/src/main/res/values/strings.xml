@@ -24,12 +24,24 @@
     <string name="arrow_up">\u2191</string>
 
     <string name="no_internet_connection">Internet connection is disabled</string>
-    <string name="no_data">There`s no cached data. Turn on Internet connection and try to refresh</string>
+    <string name="no_data">Internet connection is disabled. Try to turn on the Internet connection and refresh</string>
 
     <string name="mps">mps</string>
 
     <string name="fahrenheit_degree">Fahrenheit degree</string>
-    
+
+    <string name="refresh_interval">Refresh interval</string>
+
+    <array name="refresh_intervals">
+        <item>Never</item>
+        <item>Half an hour</item>
+        <item>One hour</item>
+        <item>Three hours</item>
+        <item>Six hours</item>
+        <item>Twelve hours</item>
+        <item>Twenty four hours</item>
+    </array>
+
     <!-- **********************************    weather ids    **********************************-->
 
     <!-- thunderstorm -->

@@ -47,9 +47,9 @@ public abstract class PresenterFragment<P extends BasePresenter<V>, V extends Pr
   }
 
   @Override
-  public final void onViewCreated(android.view.View view, Bundle savedInstanceState) {
+  public void onViewCreated(View view, Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    initializeView(view);
+    initializeView(view, savedInstanceState);
   }
 
   @Override
@@ -97,7 +97,7 @@ public abstract class PresenterFragment<P extends BasePresenter<V>, V extends Pr
 
   protected abstract int getLayoutRes();
 
-  protected abstract void initializeView(android.view.View view);
+  protected abstract void initializeView(View view, Bundle savedInstanceState);
 
   protected abstract void destroyView();
 

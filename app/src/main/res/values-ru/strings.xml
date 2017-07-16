@@ -16,13 +16,24 @@
     <string name="cloudiness">облачность</string>
 
     <string name="no_internet_connection">Соединение с интернетом отсутствует</string>
-    <string name="no_data">Не удалось найти сохраненные данные. Попробуйте включить интернет соединение и обновить данные</string>
+    <string name="no_data">Соединение с интернетом отсутствует. Попробуйте включить интернет и обновить</string>
 
-    <string name="temperature_unit">Единицы измерения</string>
     <string name="fahrenheit_degree">Шкала Фаренгейта</string>
 
+    <string name="refresh_interval">Интервал обновления</string>
 
     <string name="mps">м/с</string>
+
+    <array name="refresh_intervals">
+        <item>Никогда</item>
+        <item>Полчаса</item>
+        <item>Час</item>
+        <item>Три часа</item>
+        <item>Шесть часов</item>
+        <item>Двенадцать часов</item>
+        <item>Двадцать четыре часа</item>
+    </array>
+
 
     <!-- **********************************    weather ids    **********************************-->
 

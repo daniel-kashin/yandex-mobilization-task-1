@@ -23,8 +23,8 @@ import javax.inject.Inject;
 public class WeatherFragment extends PresenterFragment<WeatherPresenter, WeatherView>
     implements WeatherView {
 
-  @Inject
-  PresenterFactory<WeatherPresenter, WeatherView> presenterFactory;
+  private static String KEY_OVERLAY_LAYOUT_VISIBLE = "KEY_OVERLAY_LAYOUT_VISIBLE";
+  private static String KEY_WEATHER_LAYOUT_VISIBLE = "KEY_WEATHER_LAYOUT_VISIBLE";
 
   private TextView textDescription;
   private TextView textMainTemperature;
@@ -36,6 +36,9 @@ public class WeatherFragment extends PresenterFragment<WeatherPresenter, Weather
   private TextView textCloudiness;
   private RelativeLayout layoutOverlay;
   private ScrollView scrollWeather;
+
+  @Inject
+  PresenterFactory<WeatherPresenter, WeatherView> presenterFactory;
 
   // ------------------------------------- newInstance --------------------------------------------
 
@@ -62,60 +65,19 @@ public class WeatherFragment extends PresenterFragment<WeatherPresenter, Weather
         .inject(this);
   }
 
+
+
   @Override
   public void onStart() {
     ((ToolbarContainer) getActivity()).setTitle(getString(R.string.main_drawer_weather));
     super.onStart();
   }
 
-  // --------------------------------------- BaseFragment -----------------------------------------
-
   @Override
-  protected WeatherView getViewInterface() {
-    return this;
-  }
-
-  @Override
-  protected PresenterFactory<WeatherPresenter, WeatherView> getPresenterFactory() {
-    return presenterFactory;
-  }
-
-  @Override
-  protected int getFragmentId() {
-    return this.getClass().getSimpleName().hashCode();
-  }
-
-  @Override
-  protected int getLayoutRes() {
-    return R.layout.fragment_weather;
-  }
-
-  @Override
-  protected void initializeView(View view) {
-    textDescription = (TextView) view.findViewById(R.id.text_description);
-    textMainTemperature = (TextView) view.findViewById(R.id.text_main_temperature);
-    textAdditionalTemperature = (TextView) view.findViewById(R.id.text_additional_temperature);
-    imageCondition = (ImageView) view.findViewById(R.id.image_condition);
-    textWind = (TextView) view.findViewById(R.id.text_wind);
-    textHumidity = (TextView) view.findViewById(R.id.text_humidity);
-    textPressure = (TextView) view.findViewById(R.id.text_pressure);
-    textCloudiness = (TextView) view.findViewById(R.id.text_cloudiness);
-    layoutOverlay = (RelativeLayout) view.findViewById(R.id.layout_overlay);
-    scrollWeather = (ScrollView) view.findViewById(R.id.scroll_weather);
-  }
-
-  @Override
-  protected void destroyView() {
-    textDescription = null;
-    textMainTemperature = null;
-    textAdditionalTemperature = null;
-    imageCondition = null;
-    textWind = null;
-    textHumidity = null;
-    textPressure = null;
-    textCloudiness = null;
-    layoutOverlay = null;
-    scrollWeather = null;
+  public void onSaveInstanceState(Bundle outState) {
+    outState.putBoolean(KEY_OVERLAY_LAYOUT_VISIBLE, layoutOverlay.getVisibility() == View.VISIBLE);
+    outState.putBoolean(KEY_WEATHER_LAYOUT_VISIBLE, scrollWeather.getVisibility() == View.VISIBLE);
+    super.onSaveInstanceState(outState);
   }
 
   // ---------------------------------------- WeatherView -----------------------------------------
@@ -170,5 +132,63 @@ public class WeatherFragment extends PresenterFragment<WeatherPresenter, Weather
     if (getPresenter() != null) {
       ((WeatherPresenter)getPresenter()).onRefresh();
     }
+  }
+
+  // --------------------------------------- BaseFragment -----------------------------------------
+
+  @Override
+  protected WeatherView getViewInterface() {
+    return this;
+  }
+
+  @Override
+  protected PresenterFactory<WeatherPresenter, WeatherView> getPresenterFactory() {
+    return presenterFactory;
+  }
+
+  @Override
+  protected int getFragmentId() {
+    return this.getClass().getSimpleName().hashCode();
+  }
+
+  @Override
+  protected int getLayoutRes() {
+    return R.layout.fragment_weather;
+  }
+
+  @Override
+  protected void initializeView(View view, Bundle savedInstanceState) {
+    textDescription = (TextView) view.findViewById(R.id.text_description);
+    textMainTemperature = (TextView) view.findViewById(R.id.text_main_temperature);
+    textAdditionalTemperature = (TextView) view.findViewById(R.id.text_additional_temperature);
+    imageCondition = (ImageView) view.findViewById(R.id.image_condition);
+    textWind = (TextView) view.findViewById(R.id.text_wind);
+    textHumidity = (TextView) view.findViewById(R.id.text_humidity);
+    textPressure = (TextView) view.findViewById(R.id.text_pressure);
+    textCloudiness = (TextView) view.findViewById(R.id.text_cloudiness);
+    layoutOverlay = (RelativeLayout) view.findViewById(R.id.layout_overlay);
+    scrollWeather = (ScrollView) view.findViewById(R.id.scroll_weather);
+
+    if (savedInstanceState != null && savedInstanceState.containsKey(KEY_OVERLAY_LAYOUT_VISIBLE)
+        && savedInstanceState.containsKey(KEY_WEATHER_LAYOUT_VISIBLE)){
+      layoutOverlay.setVisibility(savedInstanceState.getBoolean(KEY_OVERLAY_LAYOUT_VISIBLE)
+          ? View.VISIBLE : View.GONE);
+      scrollWeather.setVisibility(savedInstanceState.getBoolean(KEY_WEATHER_LAYOUT_VISIBLE)
+          ? View.VISIBLE : View.GONE);
+    }
+  }
+
+  @Override
+  protected void destroyView() {
+    textDescription = null;
+    textMainTemperature = null;
+    textAdditionalTemperature = null;
+    imageCondition = null;
+    textWind = null;
+    textHumidity = null;
+    textPressure = null;
+    textCloudiness = null;
+    layoutOverlay = null;
+    scrollWeather = null;
   }
 }

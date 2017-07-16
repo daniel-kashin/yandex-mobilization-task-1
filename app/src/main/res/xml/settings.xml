@@ -3,4 +3,10 @@
     <CheckBoxPreference
         android:key="fahrenheit_degree"
         android:title="@string/fahrenheit_degree"/>
+
+    <ListPreference
+        android:key="refresh_period"
+        android:entries="@array/refresh_intervals"
+        android:entryValues="@array/refresh_intervals_identifiers"
+        android:title="@string/refresh_interval"/>
 </PreferenceScreen>

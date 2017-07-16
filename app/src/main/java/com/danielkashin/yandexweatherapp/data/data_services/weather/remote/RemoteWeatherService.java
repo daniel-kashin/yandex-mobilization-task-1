@@ -5,7 +5,7 @@ import com.danielkashin.yandexweatherapp.data.exceptions.ExceptionBundle;
 import retrofit2.Call;
 
 
-public interface WeatherRemoteService {
+public interface RemoteWeatherService {
 
   Call<NetworkWeather> getWeather(String city);
 

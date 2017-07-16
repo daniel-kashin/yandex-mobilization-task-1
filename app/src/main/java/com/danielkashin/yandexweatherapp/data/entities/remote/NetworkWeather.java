@@ -30,7 +30,7 @@ public class NetworkWeather {
   private NetworkRain rain;
   @SerializedName("dt")
   @Expose
-  private int dt;
+  private long dt;
   @SerializedName("sys")
   @Expose
   private NetworkSys sys;
@@ -77,7 +77,7 @@ public class NetworkWeather {
     return new NetworkRain(rain);
   }
 
-  public int getDt() {
+  public long getDt() {
     return dt;
   }
 

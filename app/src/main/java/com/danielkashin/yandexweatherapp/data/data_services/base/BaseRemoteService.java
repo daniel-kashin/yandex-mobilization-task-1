@@ -7,14 +7,14 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 
-public abstract class BaseNetworkService<S> {
+public abstract class BaseRemoteService<S> {
 
   private final String apiKey;
 
   private S dataService;
 
 
-  public BaseNetworkService(String baseUrl, String apiKey, OkHttpClient okHttpClient){
+  public BaseRemoteService(String baseUrl, String apiKey, OkHttpClient okHttpClient){
     ExceptionHelper.checkAllObjectsNonNull(baseUrl, apiKey, okHttpClient);
 
     this.apiKey = apiKey;
