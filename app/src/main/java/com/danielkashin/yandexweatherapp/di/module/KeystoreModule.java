@@ -1,9 +1,9 @@
 package com.danielkashin.yandexweatherapp.di.module;
 
 import com.danielkashin.yandexweatherapp.BuildConfig;
-import com.danielkashin.yandexweatherapp.di.tags.ApiKey;
-import com.danielkashin.yandexweatherapp.di.tags.DatabaseName;
-import com.danielkashin.yandexweatherapp.di.tags.DatabaseBuildNumber;
+import com.danielkashin.yandexweatherapp.di.qualifiers.ApiKey;
+import com.danielkashin.yandexweatherapp.di.qualifiers.DatabaseName;
+import com.danielkashin.yandexweatherapp.di.qualifiers.DatabaseBuildNumber;
 
 import javax.inject.Singleton;
 

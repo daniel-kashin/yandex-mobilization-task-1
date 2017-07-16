@@ -7,7 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.danielkashin.yandexweatherapp.R;
-import com.danielkashin.yandexweatherapp.presentation.view.main_drawer.TitleContainer;
+import com.danielkashin.yandexweatherapp.presentation.view.main_drawer.ToolbarContainer;
 
 
 public class AboutFragment extends Fragment {
@@ -24,8 +24,8 @@ public class AboutFragment extends Fragment {
   public void onAttach(Context context) {
     super.onAttach(context);
 
-    if (!(context instanceof TitleContainer)) {
-      throw new IllegalStateException("Activity must be an instance of TitleContainer");
+    if (!(context instanceof ToolbarContainer)) {
+      throw new IllegalStateException("Activity must be an instance of ToolbarContainer");
     }
   }
 
@@ -37,8 +37,8 @@ public class AboutFragment extends Fragment {
 
   @Override
   public void onStart() {
+    ((ToolbarContainer)getActivity()).setTitle(getString(R.string.main_drawer_about));
     super.onStart();
-    ((TitleContainer)getActivity()).setTitle(getString(R.string.main_drawer_about));
   }
 
 }

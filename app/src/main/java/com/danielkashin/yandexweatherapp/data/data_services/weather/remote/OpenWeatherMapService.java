@@ -1,11 +1,11 @@
-package com.danielkashin.yandexweatherapp.data.data_service.weather;
+package com.danielkashin.yandexweatherapp.data.data_services.weather.remote;
 
 
 import android.support.annotation.NonNull;
 
 import com.danielkashin.yandexweatherapp.data.constants.Endpoints;
 import com.danielkashin.yandexweatherapp.data.contracts.remote.OpenWeatherMapContract;
-import com.danielkashin.yandexweatherapp.data.data_service.base.BaseNetworkService;
+import com.danielkashin.yandexweatherapp.data.data_services.base.BaseNetworkService;
 import com.danielkashin.yandexweatherapp.data.entities.remote.NetworkWeather;
 import com.danielkashin.yandexweatherapp.data.exceptions.ExceptionBundle;
 
@@ -21,13 +21,13 @@ import retrofit2.Retrofit;
 
 
 public class OpenWeatherMapService extends BaseNetworkService<OpenWeatherMapContract>
-    implements WeatherNetworkService {
+    implements WeatherRemoteService {
 
   private OpenWeatherMapService(String apiKey, OkHttpClient okHttpClient) {
     super(Endpoints.OPEN_WEATHER_MAP_BASE_URL, apiKey, okHttpClient);
   }
 
-  // --------------------------------- WeatherNetworkService --------------------------------------
+  // --------------------------------- WeatherRemoteService --------------------------------------
 
   @Override
   public Call<NetworkWeather> getWeather(String city) {
@@ -72,7 +72,7 @@ public class OpenWeatherMapService extends BaseNetworkService<OpenWeatherMapCont
     private Factory() {
     }
 
-    public static WeatherNetworkService create(String apiKey, OkHttpClient okHttpClient) {
+    public static WeatherRemoteService create(String apiKey, OkHttpClient okHttpClient) {
       return new OpenWeatherMapService(apiKey, okHttpClient);
     }
   }

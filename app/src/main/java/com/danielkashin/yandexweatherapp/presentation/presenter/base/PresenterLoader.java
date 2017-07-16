@@ -5,7 +5,7 @@ import android.support.v4.content.Loader;
 import com.danielkashin.yandexweatherapp.presentation.view.base.PresenterView;
 
 
-public class PresenterLoader<P extends BasicPresenter<V>, V extends PresenterView> extends Loader<P> {
+public class PresenterLoader<P extends BasePresenter<V>, V extends PresenterView> extends Loader<P> {
 
   private final PresenterFactory<P, V> factory;
   private P presenter;
@@ -15,7 +15,7 @@ public class PresenterLoader<P extends BasicPresenter<V>, V extends PresenterVie
     super(context);
 
     if (factory == null) {
-      throw new IllegalStateException("BasicPresenter factory must be non null");
+      throw new IllegalStateException("BasePresenter factory must be non null");
     }
 
     this.factory = factory;

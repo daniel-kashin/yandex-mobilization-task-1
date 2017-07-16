@@ -41,13 +41,11 @@ public class ExceptionBundle extends Exception {
     // general exceptions
     UNKNOWN(-1),
     NETWORK_UNAVAILABLE(0),
+    EMPTY_DATA(100),
 
     // api exceptions
-    API_ERROR(401),
+    API_ERROR(200);
 
-    // database exceptions
-    DATABASE_SOURCE_IS_EMPTY(607),
-    DATABASE_CLOSED(608);
 
     private final int code;
 

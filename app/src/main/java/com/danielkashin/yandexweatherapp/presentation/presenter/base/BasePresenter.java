@@ -3,7 +3,7 @@ package com.danielkashin.yandexweatherapp.presentation.presenter.base;
 import com.danielkashin.yandexweatherapp.presentation.view.base.PresenterView;
 
 
-public abstract class BasicPresenter<V extends PresenterView> implements Presenter<V> {
+public abstract class BasePresenter<V extends PresenterView> implements Presenter<V> {
 
   private V view;
 

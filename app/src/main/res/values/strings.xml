@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Yandex Weather App</string>
+    <string name="app_name">Weather For You</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -10,5 +10,110 @@
 
     <string name="info">Weather Application. Made by Daniel Kashin as a Homework for project Yandex.Mobilization 2017.</string>
 
-    <string name="weather_screen">Weather Screen</string>
+    <string name="moscow">Moscow</string>
+
+    <string name="wind">wind</string>
+    <string name="humidity">humidity</string>
+    <string name="pressure">pressure</string>
+    <string name="cloudiness">cloudiness</string>
+    
+    <string name="degree">\u00B0</string>
+    <string name="celsius">\u2103</string>
+    <string name="fahrenheit">\u2101</string>
+    <string name="arrow_down">\u2193</string>
+    <string name="arrow_up">\u2191</string>
+
+    <string name="no_internet_connection">Internet connection is disabled</string>
+    <string name="no_data">There`s no cached data. Turn on Internet connection and try to refresh</string>
+
+    <string name="mps">mps</string>
+
+    <string name="fahrenheit_degree">Fahrenheit degree</string>
+    
+    <!-- **********************************    weather ids    **********************************-->
+
+    <!-- thunderstorm -->
+    <string name="id_200">thunderstorm with light rain</string>
+    <string name="id_201">thunderstorm with rain</string>
+    <string name="id_202">thunderstorm with heavy rain</string>
+    <string name="id_210">light thunderstorm</string>
+    <string name="id_211">thunderstorm</string>
+    <string name="id_212">heavy thunderstorm</string>
+    <string name="id_221">ragged thunderstorm</string>
+    <string name="id_230">thunderstorm with light drizzle</string>
+    <string name="id_231">thunderstorm with drizzle</string>
+    <string name="id_232">thunderstorm with heavy drizzle</string>
+    <!-- drizzle -->
+    <string name="id_300">light intensity drizzle</string>
+    <string name="id_301">drizzle</string>
+    <string name="id_302">heavy intensity drizzle</string>
+    <string name="id_310">light intensity drizzle rain</string>
+    <string name="id_311">drizzle rain</string>
+    <string name="id_312">heavy intensity drizzle rain</string>
+    <string name="id_313">shower rain and drizzle</string>
+    <string name="id_314">heavy shower rain and drizzle</string>
+    <string name="id_321">shower drizzle</string>
+    <!-- rain -->
+    <string name="id_500">light rain</string>
+    <string name="id_501">moderate rain</string>
+    <string name="id_502">heavy intensity rain</string>
+    <string name="id_503">very heavy rain</string>
+    <string name="id_504">extreme rain</string>
+    <string name="id_511">freezing rain</string>
+    <string name="id_520">light intensity shower rain</string>
+    <string name="id_521">shower rain</string>
+    <string name="id_522">heavy intensity shower rain</string>
+    <string name="id_531">ragged shower rain</string>
+    <!-- snow -->
+    <string name="id_600">light snow</string>
+    <string name="id_601">snow</string>
+    <string name="id_602">heavy snow</string>
+    <string name="id_611">sleet</string>
+    <string name="id_612">shower sleet</string>
+    <string name="id_615">light rain and snow</string>
+    <string name="id_616">rain and snow</string>
+    <string name="id_620">light shower snow</string>
+    <string name="id_621">shower snow</string>
+    <string name="id_622">heavy shower snow</string>
+    <!-- atmosphere -->
+    <string name="id_701">mist</string>
+    <string name="id_711">smoke</string>
+    <string name="id_721">haze</string>
+    <string name="id_731">sand, dust whirls</string>
+    <string name="id_741">fog</string>
+    <string name="id_751">sand</string>
+    <string name="id_761">dust</string>
+    <string name="id_762">volcanic ash</string>
+    <string name="id_771">squalls</string>
+    <string name="id_781">tornado</string>
+    <!-- clear -->
+    <string name="id_800">clear sky</string>
+    <!-- clouds -->
+    <string name="id_801">few clouds</string>
+    <string name="id_802">scattered clouds</string>
+    <string name="id_803">broken clouds</string>
+    <string name="id_804">overcast clouds</string>
+    <!-- extreme -->
+    <string name="id_900">tornado</string>
+    <string name="id_901">tropical storm</string>
+    <string name="id_902">hurricane</string>
+    <string name="id_903">cold</string>
+    <string name="id_904">hot</string>
+    <string name="id_905">windy</string>
+    <string name="id_906">hail</string>
+    <!-- additional -->
+    <string name="id_951">calm</string>
+    <string name="id_952">light breeze</string>
+    <string name="id_953">gentle breeze</string>
+    <string name="id_954">moderate breeze</string>
+    <string name="id_955">fresh breeze</string>
+    <string name="id_956">strong breeze</string>
+    <string name="id_957">high wind, near gale</string>
+    <string name="id_958">gale</string>
+    <string name="id_959">severe gale</string>
+    <string name="id_960">storm</string>
+    <string name="id_961">violent storm</string>
+    <string name="id_962">hurricane</string>
+
+
 </resources>

@@ -5,18 +5,20 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
+
+import com.danielkashin.yandexweatherapp.presentation.presenter.base.BasePresenter;
 import com.danielkashin.yandexweatherapp.presentation.presenter.base.PresenterFactory;
-import com.danielkashin.yandexweatherapp.presentation.presenter.base.BasicPresenter;
 import com.danielkashin.yandexweatherapp.presentation.presenter.base.PresenterLoader;
 
 
-public abstract class PresenterFragment<P extends BasicPresenter<V>, V extends PresenterView>
+public abstract class PresenterFragment<P extends BasePresenter<V>, V extends PresenterView>
     extends Fragment implements PresenterView, LoaderManager.LoaderCallbacks<P> {
 
   private P presenter;
 
-  protected final BasicPresenter<V> getPresenter() {
+  protected final BasePresenter<V> getPresenter() {
     return presenter;
   }
 
@@ -25,8 +27,6 @@ public abstract class PresenterFragment<P extends BasicPresenter<V>, V extends P
   @Override
   public void onActivityCreated(Bundle savedInstanceState) {
     super.onActivityCreated(savedInstanceState);
-
-    super.onCreate(savedInstanceState);
 
     // loader is created -> get presenter
     Loader<P> loader = getLoaderManager().getLoader(getFragmentId());
@@ -41,7 +41,7 @@ public abstract class PresenterFragment<P extends BasicPresenter<V>, V extends P
   }
 
   @Override
-  public android.view.View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
+  public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
     super.onCreateView(inflater, parent, savedInstanceState);
     return inflater.inflate(getLayoutRes(), parent, false);
   }
@@ -50,6 +50,12 @@ public abstract class PresenterFragment<P extends BasicPresenter<V>, V extends P
   public final void onViewCreated(android.view.View view, Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     initializeView(view);
+  }
+
+  @Override
+  public void onDestroyView() {
+    super.onDestroyView();
+    destroyView();
   }
 
   @Override
@@ -92,5 +98,7 @@ public abstract class PresenterFragment<P extends BasicPresenter<V>, V extends P
   protected abstract int getLayoutRes();
 
   protected abstract void initializeView(android.view.View view);
+
+  protected abstract void destroyView();
 
 }

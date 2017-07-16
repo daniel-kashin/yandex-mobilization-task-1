@@ -14,18 +14,24 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.danielkashin.yandexweatherapp.R;
 import com.danielkashin.yandexweatherapp.presentation.view.about.AboutFragment;
 import com.danielkashin.yandexweatherapp.presentation.view.settings.SettingsFragment;
 import com.danielkashin.yandexweatherapp.presentation.view.weather.WeatherFragment;
+import com.danielkashin.yandexweatherapp.presentation.view.weather.WeatherView;
 
 
-@SuppressWarnings("FieldCanBeLocal")// view fields are quite often useful in the whole activity scope
+@SuppressWarnings("FieldCanBeLocal")
+// view fields are quite often useful in the whole activity scope
 public class MainDrawerActivity extends AppCompatActivity
-    implements NavigationView.OnNavigationItemSelectedListener, TitleContainer {
+    implements NavigationView.OnNavigationItemSelectedListener, ToolbarContainer {
 
+  private ImageView imageRefresh;
+  private ProgressBar progressBar;
   private TextView textToolbar;
   private Toolbar toolbar;
   private DrawerLayout drawerLayout;
@@ -88,11 +94,27 @@ public class MainDrawerActivity extends AppCompatActivity
     return true;
   }
 
-  // ------------------------------------- TitleContainer ----------------------------------------
+  // ------------------------------------- ToolbarContainer ----------------------------------------
 
   @Override
   public void setTitle(String titleText) {
+    imageRefresh.setVisibility(View.GONE);
+    progressBar.setVisibility(View.GONE);
     textToolbar.setText(titleText);
+  }
+
+  @Override
+  public void toggleIcon(boolean showProgressBar, boolean showRefreshIcon) {
+    if (showProgressBar && showRefreshIcon || !showProgressBar && !showRefreshIcon) {
+      progressBar.setVisibility(View.GONE);
+      imageRefresh.setVisibility(View.GONE);
+    } else if (showProgressBar) {
+      imageRefresh.setVisibility(View.GONE);
+      progressBar.setVisibility(View.VISIBLE);
+    } else {
+      progressBar.setVisibility(View.GONE);
+      imageRefresh.setVisibility(View.VISIBLE);
+    }
   }
 
   // ----------------------------------------- private --------------------------------------------
@@ -106,7 +128,7 @@ public class MainDrawerActivity extends AppCompatActivity
     Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
     if (currentFragment == null || currentFragment.getClass() != fragment.getClass()) {
       FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-      transaction.replace(R.id.fragment_container, fragment);
+      transaction.replace(R.id.fragment_container, fragment, fragment.getClass().getSimpleName());
 
       if (addToBackStack) {
         transaction.addToBackStack(null);
@@ -119,6 +141,22 @@ public class MainDrawerActivity extends AppCompatActivity
   }
 
   private void initializeView() {
+    imageRefresh = (ImageView) findViewById(R.id.image_refresh);
+    progressBar = (ProgressBar) findViewById(R.id.progress_bar);
+    imageRefresh.setVisibility(View.GONE);
+    progressBar.setVisibility(View.GONE);
+
+    imageRefresh.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+        if (currentFragment instanceof WeatherView) {
+          ((WeatherView)currentFragment).onRefreshButtonClick();
+        }
+
+      }
+    });
+
     toolbar = (Toolbar) findViewById(R.id.toolbar);
     toolbar.setTitle("");
     textToolbar = (TextView) findViewById(R.id.text_toolbar);

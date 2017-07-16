@@ -1,8 +1,11 @@
 package com.danielkashin.yandexweatherapp.di.module;
 
-import com.danielkashin.yandexweatherapp.data.data_service.weather.OpenWeatherMapService;
-import com.danielkashin.yandexweatherapp.data.data_service.weather.WeatherNetworkService;
-import com.danielkashin.yandexweatherapp.di.tags.ApiKey;
+import android.content.Context;
+
+import com.danielkashin.yandexweatherapp.data.data_services.weather.remote.OpenWeatherMapService;
+import com.danielkashin.yandexweatherapp.data.data_services.weather.remote.WeatherRemoteService;
+import com.danielkashin.yandexweatherapp.data.managers.NetworkManager;
+import com.danielkashin.yandexweatherapp.di.qualifiers.ApiKey;
 import java.util.concurrent.TimeUnit;
 import javax.inject.Singleton;
 import dagger.Module;
@@ -17,16 +20,15 @@ public class NetworkModule {
   @Singleton
   public OkHttpClient provideOkHttpClient() {
     return new OkHttpClient.Builder()
-        .readTimeout(10, TimeUnit.SECONDS)
-        .connectTimeout(10, TimeUnit.SECONDS)
+        .readTimeout(5, TimeUnit.SECONDS)
+        .connectTimeout(5, TimeUnit.SECONDS)
         .build();
   }
 
   @Provides
   @Singleton
-  public WeatherNetworkService provideWeatherNetworkService(@ApiKey String apiKey,
-                                                            OkHttpClient okHttpClient) {
-    return OpenWeatherMapService.Factory.create(apiKey, okHttpClient);
+  public NetworkManager provideNetworkManager(Context context) {
+    return new NetworkManager(context);
   }
 
 }

@@ -9,11 +9,11 @@ public class ExceptionHelper {
   private static final String FALSE_CONDITION = "False condition";
 
 
-  public static void checkAllObjectsNonNull(Object... objects) {
+  public static void checkAllObjectsNonNull(final Object... objects) {
     checkAllObjectsNonNull(MESSAGE_OBJECTS_NULL, objects);
   }
 
-  public static void checkAllObjectsNonNull(String exceptionMessage, Object... objects) {
+  public static void checkAllObjectsNonNull(String exceptionMessage, final Object... objects) {
     for (Object object : objects) {
       if (object == null) {
         throw new NullPointerException(exceptionMessage);

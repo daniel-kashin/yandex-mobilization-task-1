@@ -1,4 +1,4 @@
-package com.danielkashin.yandexweatherapp.data.data_service.base;
+package com.danielkashin.yandexweatherapp.data.data_services.base;
 
 import com.danielkashin.yandexweatherapp.util.ExceptionHelper;
 

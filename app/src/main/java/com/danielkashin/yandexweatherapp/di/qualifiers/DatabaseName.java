@@ -1,4 +1,5 @@
-package com.danielkashin.yandexweatherapp.di.tags;
+package com.danielkashin.yandexweatherapp.di.qualifiers;
+
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -7,6 +8,6 @@ import javax.inject.Qualifier;
 
 @Qualifier
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ApiKey {
+public @interface DatabaseName {
 
 }

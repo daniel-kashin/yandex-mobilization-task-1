@@ -1,4 +1,4 @@
-package com.danielkashin.yandexweatherapp.di.tags;
+package com.danielkashin.yandexweatherapp.di.qualifiers;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
