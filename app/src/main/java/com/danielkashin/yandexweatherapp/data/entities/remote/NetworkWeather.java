@@ -81,6 +81,10 @@ public class NetworkWeather {
     return dt;
   }
 
+  public void setDt(long dt) {
+    this.dt = dt;
+  }
+
   public NetworkSys getSys() {
     return new NetworkSys(sys);
   }

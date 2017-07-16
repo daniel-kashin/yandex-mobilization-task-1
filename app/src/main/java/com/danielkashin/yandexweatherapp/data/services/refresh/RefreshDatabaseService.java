@@ -44,21 +44,6 @@ public class RefreshDatabaseService extends IntentService {
   @Override
   protected void onHandleIntent(@Nullable Intent intent) {
     try {
-      Vibrator vibrator = (Vibrator) getApplicationContext().getSystemService(VIBRATOR_SERVICE);
-      vibrator.vibrate(2000);
-
-      Notification notification = new NotificationCompat.Builder(getApplicationContext())
-          .setContentTitle("Service is now running")
-          .setContentText("Service is now running")
-          .setAutoCancel(true)
-          .setSmallIcon(R.mipmap.ic_launcher)
-          .setShowWhen(true)
-          .setColor(Color.RED)
-          .setLocalOnly(true)
-          .build();
-      NotificationManagerCompat.from(getApplicationContext())
-          .notify(new Random().nextInt(), notification);
-
       weatherRepository.getWeather("Moscow", true);
     } catch (ExceptionBundle e) {
       e.printStackTrace();

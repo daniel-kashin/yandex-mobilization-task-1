@@ -42,6 +42,7 @@ public class WeatherRepositoryImplementation implements WeatherRepository {
       Response<NetworkWeather> request = remoteWeatherService.getWeather(city).execute();
       remoteWeatherService.checkNetworkCodesForExceptions(request.code());
       NetworkWeather networkWeather = request.body();
+      networkWeather.setDt(System.currentTimeMillis() / 1000);
 
       localWeatherService.saveWeather(weatherConverter.getDatabaseWeather(networkWeather))
           .executeAsBlocking();

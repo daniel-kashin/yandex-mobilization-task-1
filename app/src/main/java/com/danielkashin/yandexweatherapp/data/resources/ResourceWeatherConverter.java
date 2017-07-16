@@ -3,24 +3,22 @@ package com.danielkashin.yandexweatherapp.data.resources;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v7.preference.PreferenceManager;
-
 import com.danielkashin.yandexweatherapp.R;
 import com.danielkashin.yandexweatherapp.data.entities.local.DatabaseWeather;
 import com.danielkashin.yandexweatherapp.data.entities.remote.NetworkWeather;
 import com.danielkashin.yandexweatherapp.data.entities.repository.Weather;
-
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
 
+@SuppressWarnings("UnnecessaryLocalVariable") // local variables helps to debug
 public class ResourceWeatherConverter implements WeatherConverter {
 
   private static final String CONDITION_DESCRIPTION_NAME_PREFIX = "id_";
   private static final String CONDITION_ICON_NAME_PREFIX = "w";
   private static final String KEY_TEMPERATURE_TYPE = "fahrenheit_degree";
-  private static final String DATE_TIME_PATTERN = "MM/dd hh:mm";
+  private static final String DATE_TIME_PATTERN = "dd/MM HH:mm";
 
   private final Context applicationContext;
 
@@ -47,7 +45,7 @@ public class ResourceWeatherConverter implements WeatherConverter {
         convertKalvinToWeatherType(currentTemperatureType, networkWeather.getMain().getTempMax()),
         getWindSummary(networkWeather.getWind().getDeg(), networkWeather.getWind().getSpeed()),
         networkWeather.getMain().getHumidity(),
-        networkWeather.getMain().getPressure(),
+        convertPressureToMMHG(networkWeather.getMain().getPressure()),
         networkWeather.getClouds().getAll()
     );
 
@@ -93,7 +91,7 @@ public class ResourceWeatherConverter implements WeatherConverter {
         convertKalvinToWeatherType(currentType, databaseWeather.getMaxTemperatureInKelvin()),
         getWindSummary(databaseWeather.getWindAngle(), databaseWeather.getWindSpeed()),
         databaseWeather.getHumidity(),
-        databaseWeather.getPressure(),
+        convertPressureToMMHG(databaseWeather.getPressure()),
         databaseWeather.getCloudiness()
     );
 
@@ -102,14 +100,11 @@ public class ResourceWeatherConverter implements WeatherConverter {
 
   @Override
   public DatabaseWeather getDatabaseWeather(NetworkWeather networkWeather) {
-    int weatherConditionId = networkWeather.getWeatherSummary().getId();
-    Weather.TemperatureType currentTemperatureType = getCurrentTemperatureType();
-
     DatabaseWeather databaseWeather = new DatabaseWeather(
         null,
         networkWeather.getDt(),
         networkWeather.getName(),
-        weatherConditionId,
+        networkWeather.getWeatherSummary().getId(),
         networkWeather.getWeatherSummary().getIcon(),
         networkWeather.getMain().getTemp(),
         networkWeather.getMain().getTempMin(),
@@ -175,7 +170,11 @@ public class ResourceWeatherConverter implements WeatherConverter {
     return speed + " " + applicationContext.getString(R.string.mps);
   }
 
-  public static String getDatetimeFromTimestamp(Long timestamp) {
+  private int convertPressureToMMHG(double pressure) {
+    return (int)(pressure * 0.75);
+  }
+
+  private static String getDatetimeFromTimestamp(Long timestamp) {
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DATE_TIME_PATTERN, Locale.getDefault());
     return simpleDateFormat.format(new Date(timestamp * 1000));
   }

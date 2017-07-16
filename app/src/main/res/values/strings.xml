@@ -23,6 +23,8 @@
     <string name="arrow_down">\u2193</string>
     <string name="arrow_up">\u2191</string>
 
+    <string name="refresh_icon_description">Refresh icon</string>
+
     <string name="no_internet_connection">Internet connection is disabled</string>
     <string name="no_data">Internet connection is disabled. Try to turn on the Internet connection and refresh</string>
 
@@ -36,11 +38,15 @@
         <item>Never</item>
         <item>Half an hour</item>
         <item>One hour</item>
-        <item>Three hours</item>
-        <item>Six hours</item>
-        <item>Twelve hours</item>
-        <item>Twenty four hours</item>
+        <item>3 hours</item>
+        <item>6 hours</item>
+        <item>12 hours</item>
+        <item>24 hours</item>
     </array>
+
+    <string name="mmHg">mmHg</string>
+    
+    <string name="updated">updated</string>
 
     <!-- **********************************    weather ids    **********************************-->
 

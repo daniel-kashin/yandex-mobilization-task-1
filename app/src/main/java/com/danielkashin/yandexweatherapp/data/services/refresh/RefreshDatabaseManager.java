@@ -13,10 +13,9 @@ public class RefreshDatabaseManager {
 
       if (period != Period.DISABLED) {
         new JobRequest.Builder(RefreshDatabaseJob.TAG)
-            .setPeriodic(getMillisecondPeriod(period))
+            .setPeriodic(getMillisecondPeriod(period), 300001)
             .setPersisted(true)
             .setRequiredNetworkType(JobRequest.NetworkType.CONNECTED)
-            .setRequirementsEnforced(true)
             .build()
             .schedule();
       }

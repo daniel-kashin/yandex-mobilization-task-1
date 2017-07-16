@@ -26,6 +26,7 @@ public class WeatherFragment extends PresenterFragment<WeatherPresenter, Weather
   private static String KEY_OVERLAY_LAYOUT_VISIBLE = "KEY_OVERLAY_LAYOUT_VISIBLE";
   private static String KEY_WEATHER_LAYOUT_VISIBLE = "KEY_WEATHER_LAYOUT_VISIBLE";
 
+  private TextView textCityName;
   private TextView textDescription;
   private TextView textMainTemperature;
   private TextView textAdditionalTemperature;
@@ -65,8 +66,6 @@ public class WeatherFragment extends PresenterFragment<WeatherPresenter, Weather
         .inject(this);
   }
 
-
-
   @Override
   public void onStart() {
     ((ToolbarContainer) getActivity()).setTitle(getString(R.string.main_drawer_weather));
@@ -75,8 +74,10 @@ public class WeatherFragment extends PresenterFragment<WeatherPresenter, Weather
 
   @Override
   public void onSaveInstanceState(Bundle outState) {
-    outState.putBoolean(KEY_OVERLAY_LAYOUT_VISIBLE, layoutOverlay.getVisibility() == View.VISIBLE);
-    outState.putBoolean(KEY_WEATHER_LAYOUT_VISIBLE, scrollWeather.getVisibility() == View.VISIBLE);
+    if (layoutOverlay != null && scrollWeather != null) {
+      outState.putBoolean(KEY_OVERLAY_LAYOUT_VISIBLE, layoutOverlay.getVisibility() == View.VISIBLE);
+      outState.putBoolean(KEY_WEATHER_LAYOUT_VISIBLE, scrollWeather.getVisibility() == View.VISIBLE);
+    }
     super.onSaveInstanceState(outState);
   }
 
@@ -92,6 +93,8 @@ public class WeatherFragment extends PresenterFragment<WeatherPresenter, Weather
     String pressure = getString(R.string.pressure);
     String cloudiness = getString(R.string.cloudiness);
 
+    textCityName.setText(getString(R.string.moscow) + " (" + getString(R.string.updated) +" "
+        + weather.date + ")");
     textDescription.setText(weather.conditionDescription);
     textMainTemperature.setText("" + weather.mainTemperature + degree);
     textAdditionalTemperature.setText(arrowDown + weather.minTemperature + degree
@@ -99,7 +102,7 @@ public class WeatherFragment extends PresenterFragment<WeatherPresenter, Weather
     imageCondition.setBackgroundResource(weather.conditionIconId);
     textWind.setText(wind + ": " + weather.windSummary);
     textHumidity.setText(humidity + ": " + weather.humidity + "%");
-    textPressure.setText(pressure + ": " + weather.pressure);
+    textPressure.setText(pressure + ": " + weather.pressure + " " + getString(R.string.mmHg));
     textCloudiness.setText(cloudiness + ": " + weather.cloudiness + "%");
 
     layoutOverlay.setVisibility(View.GONE);
@@ -158,6 +161,7 @@ public class WeatherFragment extends PresenterFragment<WeatherPresenter, Weather
 
   @Override
   protected void initializeView(View view, Bundle savedInstanceState) {
+    textCityName = (TextView) view.findViewById(R.id.text_city_name);
     textDescription = (TextView) view.findViewById(R.id.text_description);
     textMainTemperature = (TextView) view.findViewById(R.id.text_main_temperature);
     textAdditionalTemperature = (TextView) view.findViewById(R.id.text_additional_temperature);
@@ -180,6 +184,7 @@ public class WeatherFragment extends PresenterFragment<WeatherPresenter, Weather
 
   @Override
   protected void destroyView() {
+    textCityName = null;
     textDescription = null;
     textMainTemperature = null;
     textAdditionalTemperature = null;

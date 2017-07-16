@@ -2,11 +2,22 @@
 <resources>
     <string name="app_name">Погода Для Тебя</string>
 
+    <string name="navigation_drawer_open">Открыть навигацию</string>
+    <string name="navigation_drawer_close">Закрыть навигацию</string>
+
     <string name="main_drawer_weather">Погода</string>
     <string name="main_drawer_settings">Настройки</string>
     <string name="main_drawer_about">О приложении</string>
 
     <string name="info">Приложение, показывающее погоду. Сделано Данилом Кашиным в рамках домашнего задания для проекта Яндекс.Мобилизация 2017</string>
+
+    <string name="degree">\u00B0</string>
+    <string name="celsius">\u2103</string>
+    <string name="fahrenheit">\u2101</string>
+    <string name="arrow_down">\u2193</string>
+    <string name="arrow_up">\u2191</string>
+
+    <string name="refresh_icon_description">Иконка обновления</string>
 
     <string name="moscow">Москва</string>
 
@@ -28,12 +39,15 @@
         <item>Никогда</item>
         <item>Полчаса</item>
         <item>Час</item>
-        <item>Три часа</item>
-        <item>Шесть часов</item>
-        <item>Двенадцать часов</item>
-        <item>Двадцать четыре часа</item>
+        <item>3 часа</item>
+        <item>6 часов</item>
+        <item>12 часов</item>
+        <item>24 часа</item>
     </array>
 
+    <string name="mmHg">мм рт. ст.</string>
+
+    <string name="updated">обновлено</string>
 
     <!-- **********************************    weather ids    **********************************-->
 

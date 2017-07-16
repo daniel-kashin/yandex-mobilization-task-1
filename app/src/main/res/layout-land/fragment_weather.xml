@@ -115,29 +115,38 @@
 
                 </LinearLayout>
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:orientation="vertical">
+                    android:layout_marginTop="20dp">
 
                     <TextView
                         android:id="@+id/text_wind"
-                        style="@style/WeatherDescription"/>
+                        style="@style/WeatherDescription"
+                        android:textAlignment="viewStart"
+                        android:layout_below="@+id/text_cloudiness"
+                        android:layout_alignParentStart="true"/>
 
                     <TextView
                         android:id="@+id/text_humidity"
-                        style="@style/WeatherDescription"/>
+                        style="@style/WeatherDescription"
+                        android:textAlignment="viewEnd"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"/>
 
                     <TextView
                         android:id="@+id/text_pressure"
-                        style="@style/WeatherDescription"/>
+                        style="@style/WeatherDescription"
+                        android:layout_below="@+id/text_humidity"
+                        android:textAlignment="viewEnd"
+                        android:layout_alignParentEnd="true"/>
 
                     <TextView
                         android:id="@+id/text_cloudiness"
+                        android:textAlignment="viewStart"
                         style="@style/WeatherDescription"/>
 
-                </LinearLayout>
+                </RelativeLayout>
 
             </LinearLayout>
 
