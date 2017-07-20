@@ -7,22 +7,21 @@ import com.google.gson.annotations.SerializedName;
 public class NetworkSys {
 
   @SerializedName("type")
-  @Expose
   private int type;
+
   @SerializedName("id")
-  @Expose
   private int id;
+
   @SerializedName("message")
-  @Expose
   private double message;
+
   @SerializedName("country")
-  @Expose
   private String country;
+
   @SerializedName("sunrise")
-  @Expose
   private int sunrise;
+
   @SerializedName("sunset")
-  @Expose
   private int sunset;
 
   public NetworkSys() {

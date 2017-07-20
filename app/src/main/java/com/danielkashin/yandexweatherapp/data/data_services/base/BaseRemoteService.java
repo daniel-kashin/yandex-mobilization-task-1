@@ -1,7 +1,6 @@
 package com.danielkashin.yandexweatherapp.data.data_services.base;
 
 import com.danielkashin.yandexweatherapp.util.ExceptionHelper;
-
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

@@ -41,8 +41,6 @@ public class YandexWeatherApp extends Application {
   private ApplicationComponent buildApplicationComponent() {
     return DaggerApplicationComponent.builder()
         .applicationModule(new ApplicationModule(getApplicationContext()))
-        .keystoreModule(new KeystoreModule())
-        .networkModule(new NetworkModule())
         .build();
   }
 }
