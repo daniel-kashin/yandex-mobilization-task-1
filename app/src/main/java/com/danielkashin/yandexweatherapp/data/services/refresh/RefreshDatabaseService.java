@@ -23,7 +23,6 @@ public class RefreshDatabaseService extends IntentService {
   @Inject
   WeatherRepository weatherRepository;
 
-
   public RefreshDatabaseService() {
     super(KEY_CLASS_NAME);
   }

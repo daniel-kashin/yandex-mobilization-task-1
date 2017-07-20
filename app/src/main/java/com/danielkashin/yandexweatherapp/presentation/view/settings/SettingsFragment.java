@@ -51,7 +51,8 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
 
   private void initializeView(View view) {
-    findPreference("refresh_period").setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+    findPreference("refresh_period").setOnPreferenceChangeListener(
+        new Preference.OnPreferenceChangeListener() {
       @Override
       public boolean onPreferenceChange(Preference preference, Object newValue) {
         if (newValue instanceof String) {
@@ -59,7 +60,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
           RefreshDatabaseManager.setCurrentRefreshPolicy(period);
           return true;
         } else {
-          return false;
+          throw new IllegalStateException("New value can not be non String");
         }
       }
     });

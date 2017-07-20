@@ -4,8 +4,12 @@ import com.danielkashin.yandexweatherapp.util.ExceptionHelper;
 import com.evernote.android.job.JobManager;
 import com.evernote.android.job.JobRequest;
 
+import java.util.concurrent.TimeUnit;
+
 
 public class RefreshDatabaseManager {
+
+  private static final int MIN_PERIOD_IN_MILLIS = 300001;
 
   public static void setCurrentRefreshPolicy(Period period) {
     if (period != null) {
@@ -13,7 +17,7 @@ public class RefreshDatabaseManager {
 
       if (period != Period.DISABLED) {
         new JobRequest.Builder(RefreshDatabaseJob.TAG)
-            .setPeriodic(getMillisecondPeriod(period), 300001)
+            .setPeriodic(getMillisecondPeriod(period), MIN_PERIOD_IN_MILLIS)
             .setPersisted(true)
             .setRequiredNetworkType(JobRequest.NetworkType.CONNECTED)
             .build()
@@ -37,27 +41,29 @@ public class RefreshDatabaseManager {
   }
 
   private static long getMillisecondPeriod(Period period) {
-    int halfHours;
-    switch (period) {
-      case HALF_AN_HOUR: halfHours = 1; break;
-      case ONE_HOUR: halfHours = 2; break;
-      case THREE_HOURS: halfHours = 6; break;
-      case SIX_HOURS: halfHours = 12; break;
-      case TWELVE_HOURS: halfHours = 24; break;
-      case TWENTY_FOUR_HOURS: halfHours = 48; break;
-      default: throw new IllegalStateException("Unknown period");
-    }
-
-    return halfHours * 30 * 60 * 1000;
+    if (period == Period.DISABLED) throw new IllegalStateException("Cannot convert DISABLED period into duration");
+    return TimeUnit.MINUTES.toMillis(period.getMinutes());
   }
 
+  // --------------------------------------- inner classes ----------------------------------------
+
   public enum Period {
-    DISABLED,
-    HALF_AN_HOUR,
-    ONE_HOUR,
-    THREE_HOURS,
-    SIX_HOURS,
-    TWELVE_HOURS,
-    TWENTY_FOUR_HOURS
+    DISABLED(-1),
+    HALF_AN_HOUR(30),
+    ONE_HOUR(60),
+    THREE_HOURS(180),
+    SIX_HOURS(360),
+    TWELVE_HOURS(720),
+    TWENTY_FOUR_HOURS(1440);
+
+    private final long minutes;
+
+    Period(long minutes) {
+      this.minutes = minutes;
+    }
+
+    public long getMinutes() {
+      return minutes;
+    }
   }
 }

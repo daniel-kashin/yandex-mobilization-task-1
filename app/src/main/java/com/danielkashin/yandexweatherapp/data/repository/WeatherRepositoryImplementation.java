@@ -10,7 +10,13 @@ import com.danielkashin.yandexweatherapp.data.managers.NetworkManager;
 import com.danielkashin.yandexweatherapp.data.resources.WeatherConverter;
 import com.danielkashin.yandexweatherapp.util.ExceptionHelper;
 
+import java.io.IOException;
+import java.net.ConnectException;
+import java.net.SocketTimeoutException;
+import java.net.UnknownHostException;
 import java.util.concurrent.TimeUnit;
+
+import javax.net.ssl.SSLException;
 
 import retrofit2.Response;
 
@@ -52,7 +58,7 @@ public class WeatherRepositoryImplementation implements WeatherRepository {
           .executeAsBlocking();
 
       return weatherConverter.getWeather(networkWeather);
-    } catch (Exception e) {
+    } catch (ExceptionBundle | IOException e) {
       if (forceRefresh) {
         remoteWeatherService.parseException(e);
         return null;
