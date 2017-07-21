@@ -26,16 +26,15 @@ public class RefreshDatabaseManager {
     }
   }
 
-  public static Period getPeriod(String identifier) {
-    ExceptionHelper.checkAllObjectsNonNull(identifier);
-    switch (identifier) {
-      case "Never": return Period.DISABLED;
-      case "Half an hour": return Period.HALF_AN_HOUR;
-      case "One hour": return Period.ONE_HOUR;
-      case "Three hours": return Period.THREE_HOURS;
-      case "Six hours": return Period.SIX_HOURS;
-      case "Twelve hours": return Period.TWELVE_HOURS;
-      case "Twenty four hours": return Period.TWENTY_FOUR_HOURS;
+  public static Period getPeriod(int positionInAscendingList) {
+    switch (positionInAscendingList) {
+      case 0: return Period.DISABLED;
+      case 1: return Period.HALF_AN_HOUR;
+      case 2: return Period.ONE_HOUR;
+      case 3: return Period.THREE_HOURS;
+      case 4: return Period.SIX_HOURS;
+      case 5: return Period.TWELVE_HOURS;
+      case 6: return Period.TWENTY_FOUR_HOURS;
       default: throw new IllegalStateException("Unknown period");
     }
   }

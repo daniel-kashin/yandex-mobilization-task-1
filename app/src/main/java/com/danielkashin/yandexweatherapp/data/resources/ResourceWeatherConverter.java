@@ -108,16 +108,16 @@ public class ResourceWeatherConverter implements WeatherConverter {
     String description = getWeatherConditionDescription(weather.conditionId);
     int mainTemperature = weather.mainTemperature;
     int minTemperature = weather.minTemperature;
-    int maxTemeperature = weather.maxTemperature;
+    int maxTemperature = weather.maxTemperature;
     if (currentTemperatureType != oldTemperatureType) {
       mainTemperature = switchWeatherType(oldTemperatureType, mainTemperature);
       minTemperature = switchWeatherType(oldTemperatureType, minTemperature);
-      maxTemeperature = switchWeatherType(oldTemperatureType, maxTemeperature);
+      maxTemperature = switchWeatherType(oldTemperatureType, maxTemperature);
     }
 
     Weather refreshedWeather = new Weather(weather.cityName, weather.timestamp, datetime,
         weather.conditionId, description, weather.conditionIconId, currentTemperatureType,
-        mainTemperature, minTemperature, maxTemeperature, weather.windSummary, weather.humidity,
+        mainTemperature, minTemperature, maxTemperature, weather.windSummary, weather.humidity,
         weather.pressure, weather.cloudiness);
     return refreshedWeather;
   }
