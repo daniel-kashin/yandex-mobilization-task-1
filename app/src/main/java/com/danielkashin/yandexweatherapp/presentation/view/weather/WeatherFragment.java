@@ -18,6 +18,7 @@ import com.danielkashin.yandexweatherapp.presentation.view.base.PresenterFragmen
 import com.danielkashin.yandexweatherapp.presentation.view.main_drawer.ToolbarContainer;
 
 import javax.inject.Inject;
+import javax.inject.Provider;
 
 
 public class WeatherFragment extends PresenterFragment<WeatherPresenter, WeatherView>
@@ -39,7 +40,7 @@ public class WeatherFragment extends PresenterFragment<WeatherPresenter, Weather
   private ScrollView scrollWeather;
 
   @Inject
-  PresenterFactory<WeatherPresenter, WeatherView> presenterFactory;
+  Provider<PresenterFactory<WeatherPresenter, WeatherView>> presenterFactoryProvider;
 
   // ------------------------------------- newInstance --------------------------------------------
 
@@ -146,7 +147,7 @@ public class WeatherFragment extends PresenterFragment<WeatherPresenter, Weather
 
   @Override
   protected PresenterFactory<WeatherPresenter, WeatherView> getPresenterFactory() {
-    return presenterFactory;
+    return presenterFactoryProvider.get();
   }
 
   @Override
