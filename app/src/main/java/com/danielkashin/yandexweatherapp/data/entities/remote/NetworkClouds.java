@@ -7,7 +7,6 @@ import com.google.gson.annotations.SerializedName;
 public class NetworkClouds {
 
   @SerializedName("all")
-  @Expose
   private int all;
 
   public NetworkClouds() {

@@ -4,28 +4,27 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 
-public class NetworkMain {
+public class NetworkMainWeatherInformation {
 
   @SerializedName("temp")
-  @Expose
   private double temp;
+
   @SerializedName("pressure")
-  @Expose
   private int pressure;
+
   @SerializedName("humidity")
-  @Expose
   private int humidity;
+
   @SerializedName("temp_min")
-  @Expose
   private double tempMin;
+
   @SerializedName("temp_max")
-  @Expose
   private double tempMax;
 
-  public NetworkMain() {
+  public NetworkMainWeatherInformation() {
   }
 
-  public NetworkMain(double temp, int pressure, int humidity, double tempMin, double tempMax) {
+  public NetworkMainWeatherInformation(double temp, int pressure, int humidity, double tempMin, double tempMax) {
     this.temp = temp;
     this.pressure = pressure;
     this.humidity = humidity;
@@ -33,7 +32,7 @@ public class NetworkMain {
     this.tempMax = tempMax;
   }
 
-  public NetworkMain(NetworkMain other) {
+  public NetworkMainWeatherInformation(NetworkMainWeatherInformation other) {
     this(other.temp, other.pressure, other.humidity, other.tempMin, other.tempMax);
   }
 

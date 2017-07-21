@@ -10,6 +10,14 @@ import com.danielkashin.yandexweatherapp.data.managers.NetworkManager;
 import com.danielkashin.yandexweatherapp.data.resources.WeatherConverter;
 import com.danielkashin.yandexweatherapp.util.ExceptionHelper;
 
+import java.io.IOException;
+import java.net.ConnectException;
+import java.net.SocketTimeoutException;
+import java.net.UnknownHostException;
+import java.util.concurrent.TimeUnit;
+
+import javax.net.ssl.SSLException;
+
 import retrofit2.Response;
 
 
@@ -19,6 +27,7 @@ public class WeatherRepositoryImplementation implements WeatherRepository {
   private final LocalWeatherService localWeatherService;
   private final WeatherConverter weatherConverter;
   private final NetworkManager networkManager;
+
 
   private WeatherRepositoryImplementation(RemoteWeatherService remoteWeatherService,
                                           LocalWeatherService localWeatherService,
@@ -32,6 +41,7 @@ public class WeatherRepositoryImplementation implements WeatherRepository {
     this.networkManager = networkManager;
   }
 
+
   @Override
   public Weather getWeather(String city, boolean forceRefresh) throws ExceptionBundle {
     try {
@@ -42,13 +52,13 @@ public class WeatherRepositoryImplementation implements WeatherRepository {
       Response<NetworkWeather> request = remoteWeatherService.getWeather(city).execute();
       remoteWeatherService.checkNetworkCodesForExceptions(request.code());
       NetworkWeather networkWeather = request.body();
-      networkWeather.setDt(System.currentTimeMillis() / 1000);
+      networkWeather.setTimestamp(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()));
 
       localWeatherService.saveWeather(weatherConverter.getDatabaseWeather(networkWeather))
           .executeAsBlocking();
 
       return weatherConverter.getWeather(networkWeather);
-    } catch (Exception e) {
+    } catch (ExceptionBundle | IOException e) {
       if (forceRefresh) {
         remoteWeatherService.parseException(e);
         return null;

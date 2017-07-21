@@ -31,44 +31,44 @@ public class DatabaseWeather {
 
   // meta
   @StorIOSQLiteColumn(name = COLUMN_NAME_TIMESTAMP)
-  Long timestamp;
+  long timestamp;
 
   @StorIOSQLiteColumn(name = COLUMN_NAME_CITY_NAME)
   String cityName;
 
   // condition
   @StorIOSQLiteColumn(name = COLUMN_NAME_CONDITION_ID)
-  Integer conditionId;
+  int conditionId;
 
   @StorIOSQLiteColumn(name = COLUMN_NAME_CONDITION_ICON_NAME)
   String conditionIconName;
 
   // temperature
   @StorIOSQLiteColumn(name = COLUMN_NAME_MAIN_TEMPERATURE)
-  Double mainTemperatureInKelvin;
+  double mainTemperatureInKelvin;
 
   @StorIOSQLiteColumn(name = COLUMN_NAME_MIN_TEMPERATURE)
-  Double minTemperatureInKelvin;
+  double minTemperatureInKelvin;
 
   @StorIOSQLiteColumn(name = COLUMN_NAME_MAX_TEMPERATURE)
-  Double maxTemperatureInKelvin;
+  double maxTemperatureInKelvin;
 
   // wind
   @StorIOSQLiteColumn(name = COLUMN_NAME_WIND_SPEED)
-  Double windSpeed;
+  double windSpeed;
 
   @StorIOSQLiteColumn(name = COLUMN_NAME_WIND_ANDLE)
-  Double windAngle;
+  double windAngle;
 
   // other
   @StorIOSQLiteColumn(name = COLUMN_NAME_HUMIDITY)
-  Integer humidity;
+  int humidity;
 
   @StorIOSQLiteColumn(name = COLUMN_NAME_PRESSURE)
-  Integer pressure;
+  int pressure;
 
   @StorIOSQLiteColumn(name = COLUMN_NAME_CLOUDINESS)
-  Integer cloudiness;
+  int cloudiness;
 
 
   DatabaseWeather() {

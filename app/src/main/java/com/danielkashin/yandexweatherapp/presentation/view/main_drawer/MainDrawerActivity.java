@@ -152,8 +152,9 @@ public class MainDrawerActivity extends AppCompatActivity
         Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
         if (currentFragment instanceof WeatherView) {
           ((WeatherView)currentFragment).onRefreshButtonClick();
+        } else {
+          imageRefresh.setVisibility(View.GONE);
         }
-
       }
     });
 

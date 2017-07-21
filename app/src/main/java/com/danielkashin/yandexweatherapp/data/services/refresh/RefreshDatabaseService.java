@@ -23,7 +23,6 @@ public class RefreshDatabaseService extends IntentService {
   @Inject
   WeatherRepository weatherRepository;
 
-
   public RefreshDatabaseService() {
     super(KEY_CLASS_NAME);
   }
@@ -42,11 +41,10 @@ public class RefreshDatabaseService extends IntentService {
   }
 
   @Override
-  protected void onHandleIntent(@Nullable Intent intent) {
+  protected void onHandleIntent(Intent intent) {
     try {
       weatherRepository.getWeather("Moscow", true);
     } catch (ExceptionBundle e) {
-      e.printStackTrace();
       // do nothing
     }
   }

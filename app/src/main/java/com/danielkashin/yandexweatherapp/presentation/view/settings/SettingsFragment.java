@@ -51,15 +51,26 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
 
   private void initializeView(View view) {
-    findPreference("refresh_period").setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+    findPreference("refresh_period").setOnPreferenceChangeListener(
+        new Preference.OnPreferenceChangeListener() {
       @Override
       public boolean onPreferenceChange(Preference preference, Object newValue) {
         if (newValue instanceof String) {
-          RefreshDatabaseManager.Period period = RefreshDatabaseManager.getPeriod((String)newValue);
+          String[] periods = getResources().getStringArray(R.array.refresh_intervals_identifiers);
+          int periodIndex = -1;
+          for (int i = 0; i < periods.length; ++i) {
+            if (periods[i].equals(newValue)) {
+              periodIndex = i;
+              break;
+            }
+          }
+          if (periodIndex == -1) throw new IllegalStateException("New period value must be defined");
+
+          RefreshDatabaseManager.Period period = RefreshDatabaseManager.getPeriod(periodIndex);
           RefreshDatabaseManager.setCurrentRefreshPolicy(period);
           return true;
         } else {
-          return false;
+          throw new IllegalStateException("New value can not be non String");
         }
       }
     });

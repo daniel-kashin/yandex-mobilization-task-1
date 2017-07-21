@@ -8,7 +8,6 @@ import com.google.gson.annotations.SerializedName;
 public class NetworkRain {
 
   @SerializedName("3h")
-  @Expose
   private int _3h;
 
   public NetworkRain() {

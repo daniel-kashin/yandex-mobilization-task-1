@@ -6,7 +6,7 @@ import com.pushtorefresh.storio.sqlite.StorIOSQLite;
 
 public class BaseDatabaseService {
 
-  private StorIOSQLite sqLite;
+  private final StorIOSQLite sqLite;
 
   protected BaseDatabaseService(StorIOSQLite sqLite){
     ExceptionHelper.checkAllObjectsNonNull(sqLite);

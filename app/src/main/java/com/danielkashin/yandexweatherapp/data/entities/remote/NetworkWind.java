@@ -7,10 +7,9 @@ import com.google.gson.annotations.SerializedName;
 public class NetworkWind {
 
   @SerializedName("speed")
-  @Expose
   private double speed;
+
   @SerializedName("deg")
-  @Expose
   private int deg;
 
   public NetworkWind() {

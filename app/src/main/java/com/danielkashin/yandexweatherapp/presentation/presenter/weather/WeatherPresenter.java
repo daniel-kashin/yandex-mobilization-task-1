@@ -14,11 +14,11 @@ public class WeatherPresenter extends BasePresenter<WeatherView>
     implements GetWeatherUseCase.Callbacks {
 
   private Weather cachedWeather;
+  private boolean firstStart = true;
 
   private GetWeatherUseCase getWeatherUseCase;
   private RefreshWeatherUseCase refreshWeatherUseCase;
 
-  private boolean firstStart = true;
 
   public WeatherPresenter(GetWeatherUseCase getWeatherUseCase,
                           RefreshWeatherUseCase refreshWeatherUseCase) {
