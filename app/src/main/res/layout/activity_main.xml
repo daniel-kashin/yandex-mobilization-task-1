@@ -26,14 +26,41 @@
                 android:background="?attr/colorPrimary"
                 app:popupTheme="@style/AppTheme.PopupOverlay">
 
-                <TextView
-                    android:id="@+id/text_toolbar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:freezesText="true"
-                    android:textColor="@android:color/white"
-                    android:textSize="@dimen/toolbar_text_size"
-                    android:textStyle="bold"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/text_toolbar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/toolbar_text_size"
+                        android:textStyle="bold"/>
+
+                    <ImageView
+                        android:id="@+id/image_refresh"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="14dp"
+                        android:background="@mipmap/ic_refresh"
+                        android:contentDescription="@string/refresh_icon_description"
+                        android:visibility="gone"/>
+
+                    <ProgressBar
+                        android:id="@+id/progress_bar"
+                        style="?android:attr/progressBarStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="14dp"
+                        android:visibility="gone"/>
+
+                </RelativeLayout>
 
             </android.support.v7.widget.Toolbar>
 

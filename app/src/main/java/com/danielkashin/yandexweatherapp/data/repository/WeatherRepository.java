@@ -1,0 +1,13 @@
+package com.danielkashin.yandexweatherapp.data.repository;
+
+import com.danielkashin.yandexweatherapp.data.entities.repository.Weather;
+import com.danielkashin.yandexweatherapp.data.exceptions.ExceptionBundle;
+
+
+public interface WeatherRepository {
+
+  Weather getWeather(String city, boolean forceRefresh) throws ExceptionBundle;
+
+  Weather refreshWeather(Weather weather);
+
+}

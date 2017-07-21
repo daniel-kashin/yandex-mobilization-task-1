@@ -8,5 +8,7 @@
     <dimen name="about_text_size">18sp</dimen>
     <dimen name="weather_text_size">20sp</dimen>
 
-    <dimen name="about_margin_horizontal">26dp</dimen>
+    <dimen name="about_margin_horizontal">30dp</dimen>
+
+    <dimen name="weather_horizontal_margin">30dp</dimen>
 </resources>
