@@ -1,6 +1,5 @@
 package com.danielkashin.yandexweatherapp.data.entities.remote;
 
-import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 
@@ -10,12 +9,12 @@ public class NetworkWind {
   private double speed;
 
   @SerializedName("deg")
-  private int deg;
+  private double deg;
 
   public NetworkWind() {
   }
 
-  public NetworkWind(double speed, int deg) {
+  public NetworkWind(double speed, double deg) {
     this.speed = speed;
     this.deg = deg;
   }
@@ -32,7 +31,7 @@ public class NetworkWind {
     this.speed = speed;
   }
 
-  public int getDeg() {
+  public double getDeg() {
     return deg;
   }
 
