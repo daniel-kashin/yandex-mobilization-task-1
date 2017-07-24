@@ -35,6 +35,7 @@ android {
     }
     buildTypes.each {
         it.buildConfigField 'String', 'WEATHER_API_KEY', keystoreProperties['WeatherApiKey'];
+        it.buildConfigField 'String', 'PLACES_API_KEY', keystoreProperties['PlacesApiKey'];
         it.buildConfigField 'String', 'WEATHER_DATABASE_NAME', keystoreProperties['WeatherDatabaseName'];
         it.buildConfigField 'Integer', 'WEATHER_DATABASE_BUILD_NUMBER', keystoreProperties['WeatherDatabaseBuildNumber'];
     }
@@ -66,4 +67,8 @@ dependencies {
     compile 'com.evernote:android-job:1.1.11'
     // junit
     testCompile 'junit:junit:4.12'
+    //rx
+
+    //google-services
+    compile 'com.google.android.gms:play-services-places:11.0.2'
 }

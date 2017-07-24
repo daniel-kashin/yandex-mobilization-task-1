@@ -26,6 +26,9 @@
 
         <service android:name=".data.services.refresh.RefreshDatabaseService"
                  android:exported="false"/>
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBzDkLTrfLpD5tr0eRy8CPUTRis_6b-q0Y"/>
     </application>
 
 </manifest>

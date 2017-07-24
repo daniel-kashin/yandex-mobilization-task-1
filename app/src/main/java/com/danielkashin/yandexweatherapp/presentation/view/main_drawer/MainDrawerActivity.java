@@ -192,9 +192,8 @@ public class MainDrawerActivity extends AppCompatActivity
       } else if (currentFragment instanceof AboutFragment) {
         navigationView.setCheckedItem(R.id.navigation_about);
       } else {
-        throw new IllegalStateException("Unknown fragment in navigation view");
+        throw new IllegalStateException("Unknown fragment in navigation view");}
       }
-    }
   }
 
   private void setCurrentNavigationIcon() {

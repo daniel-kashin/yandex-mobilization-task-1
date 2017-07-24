@@ -15,7 +15,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:padding="6dp"
-            android:text="@string/moscow"
+            android:text="@string/your_city"
             android:textColor="@color/colorPrimary"
             android:textSize="17sp"/>
 

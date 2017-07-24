@@ -40,7 +40,6 @@ public class WeatherPresenter extends BasePresenter<WeatherView>
 
   @Override
   protected void onViewDetached() {
-
   }
 
   @Override

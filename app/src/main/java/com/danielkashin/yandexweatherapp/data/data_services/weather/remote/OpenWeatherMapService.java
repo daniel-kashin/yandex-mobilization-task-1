@@ -21,7 +21,7 @@ import retrofit2.Retrofit;
 
 
 public class OpenWeatherMapService extends BaseRemoteService<OpenWeatherMapContract>
-    implements RemoteWeatherService {
+    implements  RemoteWeatherService {
 
   private OpenWeatherMapService(String apiKey, OkHttpClient okHttpClient) {
     super(Endpoints.OPEN_WEATHER_MAP_BASE_URL, apiKey, okHttpClient);

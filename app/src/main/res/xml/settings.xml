@@ -10,4 +10,10 @@
         android:entries="@array/refresh_intervals"
         android:entryValues="@array/refresh_intervals_identifiers"
         android:title="@string/refresh_interval"/>
+
+    <Preference
+        android:key="current_city"
+        android:title="Select city"
+        android:summary="@string/current_city"
+        />
 </PreferenceScreen>
