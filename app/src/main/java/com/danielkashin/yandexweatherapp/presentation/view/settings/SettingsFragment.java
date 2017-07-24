@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -20,6 +19,7 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 
 import static android.app.Activity.RESULT_OK;
+import static com.danielkashin.yandexweatherapp.data.settings.PreferencesSettingsService.KEY_CURRENT_CITY;
 
 
 public class SettingsFragment extends PreferenceFragmentCompat {
@@ -86,7 +86,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
       }
     });
     selectCityButton = findPreference("current_city");
-    initializeSummary(selectCityButton, R.string.current_city, CURRENT_CITY);
+    initializeSummary(selectCityButton, R.string.current_city, KEY_CURRENT_CITY);
 
     selectCityButton.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
       @Override
@@ -99,7 +99,6 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
   //-------------------------------------Find City-----------------------------------------------
   private static final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1312;
-  private static final String CURRENT_CITY = "curr_city";
 
   public void selectCity() {
     try {
@@ -122,8 +121,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE && resultCode == RESULT_OK) {
         Place place = PlaceAutocomplete.getPlace(getActivity(), data);
         saveCity(place.getName().toString());
-        Log.d("myLogs", "onActivityResult: " + place.getLatLng());
-        initializeSummary(selectCityButton, R.string.current_city, CURRENT_CITY);
+        initializeSummary(selectCityButton, R.string.current_city, KEY_CURRENT_CITY);
     }
   }
 
@@ -132,7 +130,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             .getPreferenceManager()
             .getSharedPreferences()
             .edit()
-            .putString(CURRENT_CITY, newCity)
+            .putString(KEY_CURRENT_CITY, newCity)
             .apply();
   }
 

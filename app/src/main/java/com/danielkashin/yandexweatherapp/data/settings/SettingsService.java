@@ -7,4 +7,5 @@ public interface SettingsService {
 
   Weather.TemperatureType getTemperatureType();
 
+  String getCurrentCity();
 }

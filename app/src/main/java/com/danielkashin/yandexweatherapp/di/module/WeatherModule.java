@@ -8,11 +8,12 @@ import com.danielkashin.yandexweatherapp.data.managers.NetworkManager;
 import com.danielkashin.yandexweatherapp.data.repository.WeatherRepository;
 import com.danielkashin.yandexweatherapp.data.repository.WeatherRepositoryImplementation;
 import com.danielkashin.yandexweatherapp.data.resources.WeatherConverter;
+import com.danielkashin.yandexweatherapp.data.settings.SettingsService;
 import com.danielkashin.yandexweatherapp.di.qualifiers.ApiKey;
 import com.danielkashin.yandexweatherapp.di.scopes.WeatherScope;
+import com.danielkashin.yandexweatherapp.domain.use_cases.CachedWeatherUseCases;
 import com.danielkashin.yandexweatherapp.domain.use_cases.GetWeatherUseCase;
 import com.danielkashin.yandexweatherapp.domain.use_cases.RefreshWeatherUseCase;
-import com.danielkashin.yandexweatherapp.domain.use_cases.SelectCityUseCase;
 import com.danielkashin.yandexweatherapp.presentation.presenter.base.PresenterFactory;
 import com.danielkashin.yandexweatherapp.presentation.presenter.weather.WeatherPresenter;
 import com.danielkashin.yandexweatherapp.presentation.view.weather.WeatherView;
@@ -43,9 +44,10 @@ public class WeatherModule {
   public WeatherRepository provideWeatherRepository(RemoteWeatherService remoteWeatherService,
                                                     LocalWeatherService localWeatherService,
                                                     WeatherConverter weatherConverter,
-                                                    NetworkManager networkManager) {
+                                                    NetworkManager networkManager,
+                                                    SettingsService settingsService) {
     return WeatherRepositoryImplementation.Factory.create(remoteWeatherService, localWeatherService,
-        weatherConverter, networkManager);
+        weatherConverter, networkManager, settingsService);
   }
 
   @Provides
@@ -62,14 +64,15 @@ public class WeatherModule {
 
   @Provides
   @WeatherScope
-  public SelectCityUseCase provideSelectCityUseCase(WeatherRepository weatherRepository) {
-    return new SelectCityUseCase(weatherRepository);
+  public CachedWeatherUseCases provideCachedWeatherUseCases(WeatherRepository weatherRepository) {
+    return new CachedWeatherUseCases(weatherRepository);
   }
 
   @Provides
   @WeatherScope
   public PresenterFactory<WeatherPresenter, WeatherView> providePresenterFactory(
-      GetWeatherUseCase getWeatherUseCase, RefreshWeatherUseCase refreshWeatherUseCase) {
-    return new WeatherPresenter.Factory(getWeatherUseCase, refreshWeatherUseCase);
+          GetWeatherUseCase getWeatherUseCase, RefreshWeatherUseCase refreshWeatherUseCase,
+          CachedWeatherUseCases cachedWeatherUseCases) {
+    return new WeatherPresenter.Factory(getWeatherUseCase, refreshWeatherUseCase, cachedWeatherUseCases);
   }
 }

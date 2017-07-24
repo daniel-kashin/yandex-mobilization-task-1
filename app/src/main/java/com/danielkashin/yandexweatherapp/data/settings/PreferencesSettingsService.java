@@ -3,12 +3,14 @@ package com.danielkashin.yandexweatherapp.data.settings;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v7.preference.PreferenceManager;
+
 import com.danielkashin.yandexweatherapp.data.entities.repository.Weather;
 
 
 public class PreferencesSettingsService implements SettingsService {
 
   private static final String KEY_TEMPERATURE_TYPE = "fahrenheit_degree";
+  public static final String KEY_CURRENT_CITY = "current_city";
 
   private final SharedPreferences sharedPreferences;
 
@@ -29,6 +31,10 @@ public class PreferencesSettingsService implements SettingsService {
     }
 
     return currentTemperatureType;
+  }
+
+  @Override
+  public String getCurrentCity() {return sharedPreferences.getString(KEY_CURRENT_CITY, "");
   }
 
 }

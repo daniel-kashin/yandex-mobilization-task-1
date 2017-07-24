@@ -31,13 +31,13 @@ public class GetWeatherUseCase {
     asyncTaskResponse = null;
   }
 
-  public void run(final Callbacks callbacks, final String city, final boolean firstStart) {
-    ExceptionHelper.checkAllObjectsNonNull(callbacks, city);
+  public void run(final Callbacks callbacks, final boolean firstStart) {
+    ExceptionHelper.checkAllObjectsNonNull(callbacks);
 
     RunnableResponse<Weather> runnable = new RunnableResponse<Weather>() {
       @Override
       public Weather run() throws ExceptionBundle {
-        return weatherRepository.getWeather(city, !firstStart);
+        return weatherRepository.getWeather(!firstStart);
       }
     };
 
