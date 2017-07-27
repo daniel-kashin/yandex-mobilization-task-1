@@ -1,5 +1,7 @@
 package com.danielkashin.yandexweatherapp.data.repository;
 
+import android.util.Log;
+
 import com.danielkashin.yandexweatherapp.data.data_services.weather.local.LocalWeatherService;
 import com.danielkashin.yandexweatherapp.data.data_services.weather.remote.RemoteWeatherService;
 import com.danielkashin.yandexweatherapp.data.entities.local.DatabaseWeather;
@@ -48,10 +50,16 @@ public class WeatherRepositoryImplementation implements WeatherRepository {
         throw new ExceptionBundle(ExceptionBundle.Reason.NETWORK_UNAVAILABLE);
       }
 
-      Response<NetworkWeather> request = remoteWeatherService.getWeather(settingsService.getCurrentCity()).execute();
+        Log.d("myLogs", "getWeather: " + settingsService.getCurrentCityLatitude() + " " +
+                settingsService.getCurrentCityLongitude());
+      Response<NetworkWeather> request = remoteWeatherService
+              .getWeather(settingsService.getCurrentCityLatitude(),
+                          settingsService.getCurrentCityLongitude())
+              .execute();
       remoteWeatherService.checkNetworkCodesForExceptions(request.code());
       NetworkWeather networkWeather = request.body();
       networkWeather.setTimestamp(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()));
+      networkWeather.setName(settingsService.getCurrentCity());
 
       localWeatherService.saveWeather(weatherConverter.getDatabaseWeather(networkWeather))
           .executeAsBlocking();

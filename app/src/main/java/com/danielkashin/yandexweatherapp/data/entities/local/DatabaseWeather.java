@@ -2,10 +2,11 @@ package com.danielkashin.yandexweatherapp.data.entities.local;
 
 import android.support.annotation.Nullable;
 
-import com.danielkashin.yandexweatherapp.data.entities.repository.Weather;
 import com.pushtorefresh.storio.sqlite.annotations.StorIOSQLiteColumn;
 import com.pushtorefresh.storio.sqlite.annotations.StorIOSQLiteType;
 
+import static com.danielkashin.yandexweatherapp.data.contracts.local.WeatherContract.COLUMN_NAME_CITY_LATITUDE;
+import static com.danielkashin.yandexweatherapp.data.contracts.local.WeatherContract.COLUMN_NAME_CITY_LONGITUDE;
 import static com.danielkashin.yandexweatherapp.data.contracts.local.WeatherContract.COLUMN_NAME_CITY_NAME;
 import static com.danielkashin.yandexweatherapp.data.contracts.local.WeatherContract.COLUMN_NAME_CLOUDINESS;
 import static com.danielkashin.yandexweatherapp.data.contracts.local.WeatherContract.COLUMN_NAME_CONDITION_ICON_NAME;
@@ -36,6 +37,12 @@ public class DatabaseWeather {
   @StorIOSQLiteColumn(name = COLUMN_NAME_CITY_NAME)
   String cityName;
 
+  @StorIOSQLiteColumn(name = COLUMN_NAME_CITY_LATITUDE)
+  double latitude;
+
+  @StorIOSQLiteColumn(name = COLUMN_NAME_CITY_LONGITUDE)
+  double longitude;
+
   // condition
   @StorIOSQLiteColumn(name = COLUMN_NAME_CONDITION_ID)
   int conditionId;
@@ -65,7 +72,7 @@ public class DatabaseWeather {
   int humidity;
 
   @StorIOSQLiteColumn(name = COLUMN_NAME_PRESSURE)
-  int pressure;
+  double pressure;
 
   @StorIOSQLiteColumn(name = COLUMN_NAME_CLOUDINESS)
   int cloudiness;
@@ -78,7 +85,7 @@ public class DatabaseWeather {
                          String conditionIconName, double mainTemperatureInKelvin,
                          double minTemperatureInKelvin, double maxTemperatureInKelvin,
                          double windSpeed, double windAngle, int humidity,
-                         int pressure, int cloudiness) {
+                         double pressure, int cloudiness) {
     this.id = id;
     this.timestamp = timestamp;
     this.cityName = cityName;
@@ -138,7 +145,7 @@ public class DatabaseWeather {
     return humidity;
   }
 
-  public int getPressure() {
+  public double getPressure() {
     return pressure;
   }
 

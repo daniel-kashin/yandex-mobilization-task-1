@@ -7,7 +7,7 @@ import retrofit2.Call;
 
 public interface RemoteWeatherService {
 
-  Call<NetworkWeather> getWeather(String city);
+  Call<NetworkWeather> getWeather(double latitude, double longitude);
 
   void parseException(Exception exception) throws ExceptionBundle;
 

@@ -11,12 +11,15 @@ import android.widget.Toast;
 
 import com.danielkashin.yandexweatherapp.R;
 import com.danielkashin.yandexweatherapp.data.services.refresh.RefreshDatabaseManager;
+import com.danielkashin.yandexweatherapp.data.settings.SettingsService;
+import com.danielkashin.yandexweatherapp.presentation.view.application.YandexWeatherApp;
 import com.danielkashin.yandexweatherapp.presentation.view.main_drawer.ToolbarContainer;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.AutocompleteFilter;
-import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
+
+import javax.inject.Inject;
 
 import static android.app.Activity.RESULT_OK;
 import static com.danielkashin.yandexweatherapp.data.settings.PreferencesSettingsService.KEY_CURRENT_CITY;
@@ -26,6 +29,8 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
   Preference selectCityButton;
 
+  private static final int PLACE_AUTOCOMPLETE_REQUEST_CODE_FRAGMENT = 1312;
+  @Inject SettingsService settingsService;
   // ------------------------------------- newInstance --------------------------------------------
 
   public static SettingsFragment newInstance() {
@@ -41,6 +46,14 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     if (!(context instanceof ToolbarContainer)) {
       throw new IllegalStateException("Activity must be an instance of ToolbarContainer");
     }
+  }
+
+  @Override
+  public void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    ((YandexWeatherApp) getActivity().getApplication())
+            .getWeatherComponent()
+            .inject(this);
   }
 
   @Override
@@ -98,8 +111,6 @@ public class SettingsFragment extends PreferenceFragmentCompat {
   }
 
   //-------------------------------------Find City-----------------------------------------------
-  private static final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1312;
-
   public void selectCity() {
     try {
       AutocompleteFilter typeFilter = new AutocompleteFilter.Builder()
@@ -108,30 +119,19 @@ public class SettingsFragment extends PreferenceFragmentCompat {
       Intent intent = new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
               .setFilter(typeFilter)
               .build(getActivity());
-      startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
+      startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE_FRAGMENT);
 
     } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
       Toast.makeText(getActivity(), getString(R.string.no_gsm), Toast.LENGTH_SHORT).show();
     }
   }
 
-
   @Override
   public void onActivityResult(int requestCode, int resultCode, Intent data) {
-    if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE && resultCode == RESULT_OK) {
-        Place place = PlaceAutocomplete.getPlace(getActivity(), data);
-        saveCity(place.getName().toString());
-        initializeSummary(selectCityButton, R.string.current_city, KEY_CURRENT_CITY);
+    if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE_FRAGMENT && resultCode == RESULT_OK) {
+      settingsService.saveLocation(PlaceAutocomplete.getPlace(getActivity(), data));
+      initializeSummary(selectCityButton, R.string.current_city, KEY_CURRENT_CITY);
     }
-  }
-
-  private void saveCity(String newCity) {
-    selectCityButton
-            .getPreferenceManager()
-            .getSharedPreferences()
-            .edit()
-            .putString(KEY_CURRENT_CITY, newCity)
-            .apply();
   }
 
   private void initializeSummary(Preference view, int resId, String key){

@@ -1,5 +1,6 @@
 package com.danielkashin.yandexweatherapp.presentation.view.main_drawer;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,18 +18,29 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.danielkashin.yandexweatherapp.R;
+import com.danielkashin.yandexweatherapp.data.settings.SettingsService;
 import com.danielkashin.yandexweatherapp.presentation.view.about.AboutFragment;
+import com.danielkashin.yandexweatherapp.presentation.view.application.YandexWeatherApp;
 import com.danielkashin.yandexweatherapp.presentation.view.settings.SettingsFragment;
 import com.danielkashin.yandexweatherapp.presentation.view.weather.WeatherFragment;
 import com.danielkashin.yandexweatherapp.presentation.view.weather.WeatherView;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.AutocompleteFilter;
+import com.google.android.gms.location.places.ui.PlaceAutocomplete;
+
+import javax.inject.Inject;
 
 
 @SuppressWarnings("FieldCanBeLocal")
 // view fields are quite often useful in the whole activity scope
 public class MainDrawerActivity extends AppCompatActivity
     implements NavigationView.OnNavigationItemSelectedListener, ToolbarContainer {
+
+  private static final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1312;
 
   private ImageView imageRefresh;
   private ProgressBar progressBar;
@@ -40,21 +52,55 @@ public class MainDrawerActivity extends AppCompatActivity
 
   private boolean toolbarNavigationListenerIsRegistered;
 
+  @Inject SettingsService settingsService;
   // ---------------------------------------- lifecycle -------------------------------------------
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
+    ((YandexWeatherApp) getApplication())
+            .getWeatherComponent()
+            .inject(this);
+
     initializeView();
   }
 
   @Override
   protected void onStart() {
     super.onStart();
+    if (settingsService.isFirstSetup()) {
+      firstCitySetup();
+    } else {
+        if (getSupportFragmentManager().findFragmentById(R.id.fragment_container) == null) {
+            openDefaultFragment();
+        }
+    }
+  }
 
-    if (getSupportFragmentManager().findFragmentById(R.id.fragment_container) == null) {
-      openDefaultFragment();
+  private void firstCitySetup() {
+
+    try {
+      AutocompleteFilter typeFilter = new AutocompleteFilter.Builder()
+              .setTypeFilter(AutocompleteFilter.TYPE_FILTER_CITIES)
+              .build();
+      Intent intent = new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
+              .setFilter(typeFilter)
+              .build(this);
+      startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
+
+    } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
+      Toast.makeText(this, getString(R.string.no_gsm), Toast.LENGTH_SHORT).show();
+    }
+  }
+
+  @Override
+  public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE && resultCode == RESULT_OK) {
+      settingsService.saveLocation(PlaceAutocomplete.getPlace(this, data))
+              .subscribe(this::openDefaultFragment);
+    } else {
+      super.onActivityResult(requestCode, resultCode, data);
     }
   }
 
@@ -136,7 +182,7 @@ public class MainDrawerActivity extends AppCompatActivity
         getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
       }
 
-      transaction.commit();
+      transaction.commitAllowingStateLoss();
     }
   }
 
@@ -146,15 +192,12 @@ public class MainDrawerActivity extends AppCompatActivity
     imageRefresh.setVisibility(View.GONE);
     progressBar.setVisibility(View.GONE);
 
-    imageRefresh.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-        if (currentFragment instanceof WeatherView) {
-          ((WeatherView)currentFragment).onRefreshButtonClick();
-        } else {
-          imageRefresh.setVisibility(View.GONE);
-        }
+    imageRefresh.setOnClickListener(v -> {
+      Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+      if (currentFragment instanceof WeatherView) {
+        ((WeatherView)currentFragment).onRefreshButtonClick();
+      } else {
+        imageRefresh.setVisibility(View.GONE);
       }
     });
 

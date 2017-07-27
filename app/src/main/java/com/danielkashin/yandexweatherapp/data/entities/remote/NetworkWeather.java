@@ -1,8 +1,8 @@
 package com.danielkashin.yandexweatherapp.data.entities.remote;
 
-import java.util.List;
-
 import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
 
 
 public class NetworkWeather {
@@ -57,7 +57,7 @@ public class NetworkWeather {
     return main.getTempMax();
   }
 
-  public int getPressureInHpa() {
+  public double getPressureInHpa() {
     return main.getPressure();
   }
 
@@ -97,4 +97,7 @@ public class NetworkWeather {
     return name;
   }
 
+  public void setName(String name) {
+    this.name = name;
+  }
 }

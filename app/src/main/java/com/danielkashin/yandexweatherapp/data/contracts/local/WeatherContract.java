@@ -18,6 +18,10 @@ public class WeatherContract {
 
   public static final String COLUMN_NAME_CITY_NAME = "city_name";
 
+  public static final String COLUMN_NAME_CITY_LATITUDE = "city_latitude";
+
+  public static final String COLUMN_NAME_CITY_LONGITUDE = "city_longitude";
+
   // condition
   public static final String COLUMN_NAME_CONDITION_ID = "condition_id";
 
@@ -60,7 +64,9 @@ public class WeatherContract {
       + COLUMN_NAME_WIND_ANDLE + " REAL NON NULL, "
 
       + COLUMN_NAME_HUMIDITY + " INTEGER NON NULL, "
-      + COLUMN_NAME_PRESSURE + " INTEGER NON NULL, "
+      + COLUMN_NAME_PRESSURE + " DOUBLE NON NULL, "
+      + COLUMN_NAME_CITY_LONGITUDE + " DOUBLE NON NULL UNIQUE ON CONFLICT REPLACE, "
+      + COLUMN_NAME_CITY_LATITUDE + " DOUBLE NON NULL UNIQUE ON CONFLICT REPLACE, "
       + COLUMN_NAME_CLOUDINESS + " INTEGER NON NULL "
 
       + ");";

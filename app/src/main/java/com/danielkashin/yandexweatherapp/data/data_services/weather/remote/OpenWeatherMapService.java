@@ -30,8 +30,8 @@ public class OpenWeatherMapService extends BaseRemoteService<OpenWeatherMapContr
   // --------------------------------- RemoteWeatherService --------------------------------------
 
   @Override
-  public Call<NetworkWeather> getWeather(String city) {
-    return getService().getWeather(city, getApiKey());
+  public Call<NetworkWeather> getWeather(double latitude, double longitude) {
+    return getService().getWeather(latitude, longitude, getApiKey());
   }
 
   @Override

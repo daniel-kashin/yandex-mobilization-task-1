@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'me.tatarka.retrolambda'
 
 def keystoreProperties = new Properties()
 keystoreProperties.load(new FileInputStream(rootProject.file("keystore.properties")))
@@ -39,6 +40,10 @@ android {
         it.buildConfigField 'String', 'WEATHER_DATABASE_NAME', keystoreProperties['WeatherDatabaseName'];
         it.buildConfigField 'Integer', 'WEATHER_DATABASE_BUILD_NUMBER', keystoreProperties['WeatherDatabaseBuildNumber'];
     }
+    compileOptions {
+        targetCompatibility 1.8
+        sourceCompatibility 1.8
+    }
 }
 
 dependencies {
@@ -68,7 +73,10 @@ dependencies {
     // junit
     testCompile 'junit:junit:4.12'
     //rx
-
+    compile 'io.reactivex.rxjava2:rxjava:2.0.8'
+    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    compile 'com.jakewharton.rxbinding2:rxbinding:2.0.0'
+    compile 'com.jakewharton.rxbinding2:rxbinding-appcompat-v7:2.0.0'
     //google-services
     compile 'com.google.android.gms:play-services-places:11.0.2'
 }
