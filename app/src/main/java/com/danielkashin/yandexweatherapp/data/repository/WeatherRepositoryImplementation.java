@@ -1,7 +1,5 @@
 package com.danielkashin.yandexweatherapp.data.repository;
 
-import android.util.Log;
-
 import com.danielkashin.yandexweatherapp.data.data_services.weather.local.LocalWeatherService;
 import com.danielkashin.yandexweatherapp.data.data_services.weather.remote.RemoteWeatherService;
 import com.danielkashin.yandexweatherapp.data.entities.local.DatabaseWeather;
@@ -49,9 +47,6 @@ public class WeatherRepositoryImplementation implements WeatherRepository {
       if (networkManager.getStatus() == NetworkManager.NetworkStatus.DISCONNECTED) {
         throw new ExceptionBundle(ExceptionBundle.Reason.NETWORK_UNAVAILABLE);
       }
-
-        Log.d("myLogs", "getWeather: " + settingsService.getCurrentCityLatitude() + " " +
-                settingsService.getCurrentCityLongitude());
       Response<NetworkWeather> request = remoteWeatherService
               .getWeather(settingsService.getCurrentCityLatitude(),
                           settingsService.getCurrentCityLongitude())

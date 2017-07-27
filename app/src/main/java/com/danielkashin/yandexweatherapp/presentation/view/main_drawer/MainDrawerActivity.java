@@ -31,8 +31,15 @@ import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
+import com.jakewharton.rxbinding2.view.RxView;
+
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 
 
 @SuppressWarnings("FieldCanBeLocal")
@@ -51,6 +58,7 @@ public class MainDrawerActivity extends AppCompatActivity
   private ActionBarDrawerToggle drawerToggle;
 
   private boolean toolbarNavigationListenerIsRegistered;
+  CompositeDisposable compositeDisposable = new CompositeDisposable();
 
   @Inject SettingsService settingsService;
   // ---------------------------------------- lifecycle -------------------------------------------
@@ -76,6 +84,35 @@ public class MainDrawerActivity extends AppCompatActivity
             openDefaultFragment();
         }
     }
+  }
+
+  @Override
+  protected void onResume() {
+    super.onResume();
+    compositeDisposable.add(subscribeOnRefresh());
+  }
+
+  private Disposable subscribeOnRefresh() {
+    return RxView.clicks(imageRefresh)
+            .debounce(300, TimeUnit.MILLISECONDS)
+            .map(o -> getSupportFragmentManager().findFragmentById(R.id.fragment_container))
+            .filter(this::isWeatherFragment)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(o -> ((WeatherView)o).onRefreshButtonClick());
+  }
+
+  private boolean isWeatherFragment(Fragment fragment) {
+    if (fragment instanceof WeatherView) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  @Override
+  protected void onPause() {
+    super.onPause();
+    compositeDisposable.clear();
   }
 
   private void firstCitySetup() {
@@ -192,15 +229,6 @@ public class MainDrawerActivity extends AppCompatActivity
     imageRefresh.setVisibility(View.GONE);
     progressBar.setVisibility(View.GONE);
 
-    imageRefresh.setOnClickListener(v -> {
-      Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-      if (currentFragment instanceof WeatherView) {
-        ((WeatherView)currentFragment).onRefreshButtonClick();
-      } else {
-        imageRefresh.setVisibility(View.GONE);
-      }
-    });
-
     toolbar = (Toolbar) findViewById(R.id.toolbar);
     toolbar.setTitle("");
     textToolbar = (TextView) findViewById(R.id.text_toolbar);
@@ -215,12 +243,9 @@ public class MainDrawerActivity extends AppCompatActivity
     navigationView = (NavigationView) findViewById(R.id.navigation_view);
     navigationView.setNavigationItemSelectedListener(this);
 
-    getSupportFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
-      @Override
-      public void onBackStackChanged() {
-        setCurrentNavigationIcon();
-        setCurrentSelectedDrawer();
-      }
+    getSupportFragmentManager().addOnBackStackChangedListener(() -> {
+      setCurrentNavigationIcon();
+      setCurrentSelectedDrawer();
     });
     setCurrentNavigationIcon();
   }
@@ -252,12 +277,7 @@ public class MainDrawerActivity extends AppCompatActivity
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         if (!toolbarNavigationListenerIsRegistered) {
-          drawerToggle.setToolbarNavigationClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-              onBackPressed();
-            }
-          });
+          drawerToggle.setToolbarNavigationClickListener(v -> onBackPressed());
 
           toolbarNavigationListenerIsRegistered = true;
         }
