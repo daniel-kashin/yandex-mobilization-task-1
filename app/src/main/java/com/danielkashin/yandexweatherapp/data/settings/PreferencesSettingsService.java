@@ -3,7 +3,6 @@ package com.danielkashin.yandexweatherapp.data.settings;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v7.preference.PreferenceManager;
-import android.util.Log;
 
 import com.danielkashin.yandexweatherapp.data.entities.repository.Weather;
 import com.google.android.gms.location.places.Place;
@@ -47,7 +46,6 @@ public class PreferencesSettingsService implements SettingsService {
 
   @Override
   public void saveCurrentCityName(String city) {
-    Log.d("myLogs", "saveCurrentCityName: "+ city);
     sharedPreferences
             .edit()
             .putString(KEY_CURRENT_CITY, city)

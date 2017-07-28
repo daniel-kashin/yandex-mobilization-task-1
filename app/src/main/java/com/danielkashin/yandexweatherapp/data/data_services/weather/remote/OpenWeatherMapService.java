@@ -9,6 +9,7 @@ import com.danielkashin.yandexweatherapp.data.data_services.base.BaseRemoteServi
 import com.danielkashin.yandexweatherapp.data.entities.remote.NetworkWeather;
 import com.danielkashin.yandexweatherapp.data.exceptions.ExceptionBundle;
 
+import java.io.IOException;
 import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
@@ -16,7 +17,7 @@ import java.net.UnknownHostException;
 import javax.net.ssl.SSLException;
 
 import okhttp3.OkHttpClient;
-import retrofit2.Call;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 
 
@@ -30,8 +31,8 @@ public class OpenWeatherMapService extends BaseRemoteService<OpenWeatherMapContr
   // --------------------------------- RemoteWeatherService --------------------------------------
 
   @Override
-  public Call<NetworkWeather> getWeather(double latitude, double longitude) {
-    return getService().getWeather(latitude, longitude, getApiKey());
+  public Response<NetworkWeather> getWeather(double latitude, double longitude) throws IOException {
+    return getService().getWeather(latitude, longitude, getApiKey()).execute();
   }
 
   @Override

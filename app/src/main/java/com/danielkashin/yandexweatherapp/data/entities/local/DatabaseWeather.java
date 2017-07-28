@@ -5,6 +5,8 @@ import android.support.annotation.Nullable;
 import com.pushtorefresh.storio.sqlite.annotations.StorIOSQLiteColumn;
 import com.pushtorefresh.storio.sqlite.annotations.StorIOSQLiteType;
 
+import java.util.Objects;
+
 import static com.danielkashin.yandexweatherapp.data.contracts.local.WeatherContract.COLUMN_NAME_CITY_LATITUDE;
 import static com.danielkashin.yandexweatherapp.data.contracts.local.WeatherContract.COLUMN_NAME_CITY_LONGITUDE;
 import static com.danielkashin.yandexweatherapp.data.contracts.local.WeatherContract.COLUMN_NAME_CITY_NAME;
@@ -151,5 +153,53 @@ public class DatabaseWeather {
 
   public int getCloudiness() {
     return cloudiness;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    DatabaseWeather that = (DatabaseWeather) o;
+    return timestamp == that.timestamp &&
+            Double.compare(that.latitude, latitude) == 0 &&
+            Double.compare(that.longitude, longitude) == 0 &&
+            conditionId == that.conditionId &&
+            Double.compare(that.mainTemperatureInKelvin, mainTemperatureInKelvin) == 0 &&
+            Double.compare(that.minTemperatureInKelvin, minTemperatureInKelvin) == 0 &&
+            Double.compare(that.maxTemperatureInKelvin, maxTemperatureInKelvin) == 0 &&
+            Double.compare(that.windSpeed, windSpeed) == 0 &&
+            Double.compare(that.windAngle, windAngle) == 0 &&
+            humidity == that.humidity &&
+            Double.compare(that.pressure, pressure) == 0 &&
+            cloudiness == that.cloudiness &&
+            Objects.equals(id, that.id) &&
+            Objects.equals(cityName, that.cityName) &&
+            Objects.equals(conditionIconName, that.conditionIconName);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id, timestamp, cityName, latitude, longitude, conditionId, conditionIconName, mainTemperatureInKelvin, minTemperatureInKelvin, maxTemperatureInKelvin, windSpeed, windAngle, humidity, pressure, cloudiness);
+  }
+
+  @Override
+  public String toString() {
+    return "DatabaseWeather{" +
+            "id=" + id +
+            ", timestamp=" + timestamp +
+            ", cityName='" + cityName + '\'' +
+            ", latitude=" + latitude +
+            ", longitude=" + longitude +
+            ", conditionId=" + conditionId +
+            ", conditionIconName='" + conditionIconName + '\'' +
+            ", mainTemperatureInKelvin=" + mainTemperatureInKelvin +
+            ", minTemperatureInKelvin=" + minTemperatureInKelvin +
+            ", maxTemperatureInKelvin=" + maxTemperatureInKelvin +
+            ", windSpeed=" + windSpeed +
+            ", windAngle=" + windAngle +
+            ", humidity=" + humidity +
+            ", pressure=" + pressure +
+            ", cloudiness=" + cloudiness +
+            '}';
   }
 }
