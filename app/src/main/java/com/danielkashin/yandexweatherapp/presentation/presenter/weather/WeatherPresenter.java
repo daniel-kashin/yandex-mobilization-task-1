@@ -21,7 +21,7 @@ public class WeatherPresenter extends BasePresenter<WeatherView>
   public WeatherPresenter(GetWeatherUseCase getWeatherUseCase,
                           RefreshWeatherUseCase refreshWeatherUseCase,
                           CachedWeatherUseCases cachedWeatherUseCases) {
-    ExceptionHelper.checkAllObjectsNonNull(getWeatherUseCase, refreshWeatherUseCase);
+    ExceptionHelper.checkAllObjectsNonNull(getWeatherUseCase, refreshWeatherUseCase, cachedWeatherUseCases);
     this.getWeatherUseCase = getWeatherUseCase;
     this.refreshWeatherUseCase = refreshWeatherUseCase;
     this.cachedWeatherUseCases = cachedWeatherUseCases;
@@ -44,7 +44,7 @@ public class WeatherPresenter extends BasePresenter<WeatherView>
 
   @Override
   protected void onViewAttached() {
-      if (cachedWeatherUseCases.status()) {
+      if (cachedWeatherUseCases.cacheExists()) {
           getView().showWeather(refreshWeatherUseCase.run(cachedWeatherUseCases.get()));
       } else {
       getWeatherUseCase.run(this, true);

@@ -34,12 +34,7 @@ public class GetWeatherUseCase {
   public void run(final Callbacks callbacks, final boolean firstStart) {
     ExceptionHelper.checkAllObjectsNonNull(callbacks);
 
-    RunnableResponse<Weather> runnable = new RunnableResponse<Weather>() {
-      @Override
-      public Weather run() throws ExceptionBundle {
-        return weatherRepository.getWeather(!firstStart);
-      }
-    };
+    RunnableResponse<Weather> runnable = () -> weatherRepository.getWeather(!firstStart);
 
     PostExecuteListenerResponse<Weather> postExecuteListener =
         new PostExecuteListenerResponse<Weather>() {
