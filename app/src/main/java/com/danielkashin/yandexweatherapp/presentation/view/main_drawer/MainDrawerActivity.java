@@ -139,6 +139,9 @@ public class MainDrawerActivity extends AppCompatActivity
     } else {
       super.onActivityResult(requestCode, resultCode, data);
     }
+    if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE && resultCode == RESULT_CANCELED){
+      this.finish();
+    }
   }
 
   // ---------------------------------------- listeners -------------------------------------------
