@@ -1,6 +1,8 @@
 package com.danielkashin.yandexweatherapp.data.entities.repository;
 
 
+import java.util.Objects;
+
 public class Weather {
 
   public final String cityName;
@@ -59,5 +61,46 @@ public class Weather {
   public enum TemperatureType {
     Celsius,
     Fahrenheit
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Weather weather = (Weather) o;
+    return timestamp == weather.timestamp &&
+            conditionId == weather.conditionId &&
+            conditionIconId == weather.conditionIconId &&
+            mainTemperature == weather.mainTemperature &&
+            minTemperature == weather.minTemperature &&
+            maxTemperature == weather.maxTemperature &&
+            humidity == weather.humidity &&
+            pressure == weather.pressure &&
+            cloudiness == weather.cloudiness &&
+            Objects.equals(cityName, weather.cityName) &&
+            Objects.equals(date, weather.date) &&
+            Objects.equals(conditionDescription, weather.conditionDescription) &&
+            temperatureType == weather.temperatureType &&
+            Objects.equals(windSummary, weather.windSummary);
+  }
+
+  @Override
+  public String toString() {
+    return "Weather{" +
+            "cityName='" + cityName + '\'' +
+            ", date='" + date + '\'' +
+            ", timestamp=" + timestamp +
+            ", conditionId=" + conditionId +
+            ", conditionDescription='" + conditionDescription + '\'' +
+            ", conditionIconId=" + conditionIconId +
+            ", temperatureType=" + temperatureType +
+            ", mainTemperature=" + mainTemperature +
+            ", minTemperature=" + minTemperature +
+            ", maxTemperature=" + maxTemperature +
+            ", windSummary='" + windSummary + '\'' +
+            ", humidity=" + humidity +
+            ", pressure=" + pressure +
+            ", cloudiness=" + cloudiness +
+            '}';
   }
 }

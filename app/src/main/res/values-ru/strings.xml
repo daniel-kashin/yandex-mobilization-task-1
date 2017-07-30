@@ -18,6 +18,7 @@
     <string name="arrow_up">\u2191</string>
 
     <string name="refresh_icon_description">Иконка обновления</string>
+    <string name="city_icon_description">Иконка города</string>
 
     <string name="moscow">Москва</string>
 
@@ -133,5 +134,9 @@
     <string name="id_960">шторм</string>
     <string name="id_961">сильный шторм</string>
     <string name="id_962">ураган</string>
+    <string name="current_city">текущий:</string>
+    <string name="no_gsm">Google сервисы не доступны</string>
+    <string name="select_city">Выбор города</string>
+    <string name="your_city">Ваш город</string>
 
 </resources>

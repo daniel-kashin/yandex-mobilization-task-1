@@ -93,8 +93,7 @@ public class WeatherFragment extends PresenterFragment<WeatherPresenter, Weather
     String humidity = getString(R.string.humidity);
     String pressure = getString(R.string.pressure);
     String cloudiness = getString(R.string.cloudiness);
-
-    textCityName.setText(getString(R.string.moscow) + " (" + getString(R.string.updated) +" "
+    textCityName.setText(weather.cityName + " (" + getString(R.string.updated) +" "
         + weather.date + ")");
     textDescription.setText(weather.conditionDescription);
     textMainTemperature.setText("" + weather.mainTemperature + degree);

@@ -1,5 +1,6 @@
 package com.danielkashin.yandexweatherapp.presentation.view.main_drawer;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,18 +18,36 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.danielkashin.yandexweatherapp.R;
+import com.danielkashin.yandexweatherapp.data.settings.SettingsService;
 import com.danielkashin.yandexweatherapp.presentation.view.about.AboutFragment;
+import com.danielkashin.yandexweatherapp.presentation.view.application.YandexWeatherApp;
 import com.danielkashin.yandexweatherapp.presentation.view.settings.SettingsFragment;
 import com.danielkashin.yandexweatherapp.presentation.view.weather.WeatherFragment;
 import com.danielkashin.yandexweatherapp.presentation.view.weather.WeatherView;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.AutocompleteFilter;
+import com.google.android.gms.location.places.ui.PlaceAutocomplete;
+import com.jakewharton.rxbinding2.view.RxView;
+
+import java.util.concurrent.TimeUnit;
+
+import javax.inject.Inject;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 
 
 @SuppressWarnings("FieldCanBeLocal")
 // view fields are quite often useful in the whole activity scope
 public class MainDrawerActivity extends AppCompatActivity
     implements NavigationView.OnNavigationItemSelectedListener, ToolbarContainer {
+
+  private static final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1312;
 
   private ImageView imageRefresh;
   private ProgressBar progressBar;
@@ -39,22 +58,89 @@ public class MainDrawerActivity extends AppCompatActivity
   private ActionBarDrawerToggle drawerToggle;
 
   private boolean toolbarNavigationListenerIsRegistered;
+  CompositeDisposable compositeDisposable = new CompositeDisposable();
 
+  @Inject SettingsService settingsService;
   // ---------------------------------------- lifecycle -------------------------------------------
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
+    ((YandexWeatherApp) getApplication())
+            .getWeatherComponent()
+            .inject(this);
+
     initializeView();
   }
 
   @Override
   protected void onStart() {
     super.onStart();
+    if (settingsService.isFirstSetup()) {
+      firstCitySetup();
+    } else {
+        if (getSupportFragmentManager().findFragmentById(R.id.fragment_container) == null) {
+            openDefaultFragment();
+        }
+    }
+  }
 
-    if (getSupportFragmentManager().findFragmentById(R.id.fragment_container) == null) {
-      openDefaultFragment();
+  @Override
+  protected void onResume() {
+    super.onResume();
+    compositeDisposable.add(subscribeOnRefresh());
+  }
+
+  private Disposable subscribeOnRefresh() {
+    return RxView.clicks(imageRefresh)
+            .debounce(300, TimeUnit.MILLISECONDS)
+            .map(o -> getSupportFragmentManager().findFragmentById(R.id.fragment_container))
+            .filter(this::isWeatherFragment)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(o -> ((WeatherView)o).onRefreshButtonClick());
+  }
+
+  private boolean isWeatherFragment(Fragment fragment) {
+    if (fragment instanceof WeatherView) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  @Override
+  protected void onPause() {
+    super.onPause();
+    compositeDisposable.clear();
+  }
+
+  private void firstCitySetup() {
+
+    try {
+      AutocompleteFilter typeFilter = new AutocompleteFilter.Builder()
+              .setTypeFilter(AutocompleteFilter.TYPE_FILTER_CITIES)
+              .build();
+      Intent intent = new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
+              .setFilter(typeFilter)
+              .build(this);
+      startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
+
+    } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
+      Toast.makeText(this, getString(R.string.no_gsm), Toast.LENGTH_SHORT).show();
+    }
+  }
+
+  @Override
+  public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE && resultCode == RESULT_OK) {
+      settingsService.saveLocation(PlaceAutocomplete.getPlace(this, data))
+              .subscribe(this::openDefaultFragment);
+    } else {
+      super.onActivityResult(requestCode, resultCode, data);
+    }
+    if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE && resultCode == RESULT_CANCELED){
+      this.finish();
     }
   }
 
@@ -136,7 +222,7 @@ public class MainDrawerActivity extends AppCompatActivity
         getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
       }
 
-      transaction.commit();
+      transaction.commitAllowingStateLoss();
     }
   }
 
@@ -145,18 +231,6 @@ public class MainDrawerActivity extends AppCompatActivity
     progressBar = (ProgressBar) findViewById(R.id.progress_bar);
     imageRefresh.setVisibility(View.GONE);
     progressBar.setVisibility(View.GONE);
-
-    imageRefresh.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-        if (currentFragment instanceof WeatherView) {
-          ((WeatherView)currentFragment).onRefreshButtonClick();
-        } else {
-          imageRefresh.setVisibility(View.GONE);
-        }
-      }
-    });
 
     toolbar = (Toolbar) findViewById(R.id.toolbar);
     toolbar.setTitle("");
@@ -172,12 +246,9 @@ public class MainDrawerActivity extends AppCompatActivity
     navigationView = (NavigationView) findViewById(R.id.navigation_view);
     navigationView.setNavigationItemSelectedListener(this);
 
-    getSupportFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
-      @Override
-      public void onBackStackChanged() {
-        setCurrentNavigationIcon();
-        setCurrentSelectedDrawer();
-      }
+    getSupportFragmentManager().addOnBackStackChangedListener(() -> {
+      setCurrentNavigationIcon();
+      setCurrentSelectedDrawer();
     });
     setCurrentNavigationIcon();
   }
@@ -192,9 +263,8 @@ public class MainDrawerActivity extends AppCompatActivity
       } else if (currentFragment instanceof AboutFragment) {
         navigationView.setCheckedItem(R.id.navigation_about);
       } else {
-        throw new IllegalStateException("Unknown fragment in navigation view");
+        throw new IllegalStateException("Unknown fragment in navigation view");}
       }
-    }
   }
 
   private void setCurrentNavigationIcon() {
@@ -210,12 +280,7 @@ public class MainDrawerActivity extends AppCompatActivity
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         if (!toolbarNavigationListenerIsRegistered) {
-          drawerToggle.setToolbarNavigationClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-              onBackPressed();
-            }
-          });
+          drawerToggle.setToolbarNavigationClickListener(v -> onBackPressed());
 
           toolbarNavigationListenerIsRegistered = true;
         }

@@ -16,5 +16,4 @@ public class BaseDatabaseService {
   protected StorIOSQLite getSQLite(){
     return sqLite;
   }
-
 }

@@ -6,8 +6,13 @@ import com.danielkashin.yandexweatherapp.data.exceptions.ExceptionBundle;
 
 public interface WeatherRepository {
 
-  Weather getWeather(String city, boolean forceRefresh) throws ExceptionBundle;
+  Weather getWeather(boolean forceRefresh) throws ExceptionBundle;
 
   Weather refreshWeather(Weather weather);
 
+  Weather getCachedWeather();
+
+  boolean checkCacheRelevance();
+
+  void saveWeatherInCache(Weather weather);
 }

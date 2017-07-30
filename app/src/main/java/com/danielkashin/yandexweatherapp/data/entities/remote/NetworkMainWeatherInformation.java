@@ -1,6 +1,5 @@
 package com.danielkashin.yandexweatherapp.data.entities.remote;
 
-import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 
@@ -10,7 +9,7 @@ public class NetworkMainWeatherInformation {
   private double temp;
 
   @SerializedName("pressure")
-  private int pressure;
+  private double pressure;
 
   @SerializedName("humidity")
   private int humidity;
@@ -24,7 +23,7 @@ public class NetworkMainWeatherInformation {
   public NetworkMainWeatherInformation() {
   }
 
-  public NetworkMainWeatherInformation(double temp, int pressure, int humidity, double tempMin, double tempMax) {
+  public NetworkMainWeatherInformation(double temp, double pressure, int humidity, double tempMin, double tempMax) {
     this.temp = temp;
     this.pressure = pressure;
     this.humidity = humidity;
@@ -44,7 +43,7 @@ public class NetworkMainWeatherInformation {
     this.temp = temp;
   }
 
-  public int getPressure() {
+  public double getPressure() {
     return pressure;
   }
 

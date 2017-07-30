@@ -1,5 +1,6 @@
 package com.danielkashin.yandexweatherapp.data.data_services.base;
 
+import com.danielkashin.yandexweatherapp.di.module.ChangeableBaseUrl;
 import com.danielkashin.yandexweatherapp.util.ExceptionHelper;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
@@ -13,13 +14,13 @@ public abstract class BaseRemoteService<S> {
   private S dataService;
 
 
-  public BaseRemoteService(String baseUrl, String apiKey, OkHttpClient okHttpClient){
+  public BaseRemoteService(ChangeableBaseUrl baseUrl, String apiKey, OkHttpClient okHttpClient){
     ExceptionHelper.checkAllObjectsNonNull(baseUrl, apiKey, okHttpClient);
 
     this.apiKey = apiKey;
 
     Retrofit retrofit = new Retrofit.Builder()
-        .baseUrl(baseUrl)
+        .baseUrl(baseUrl.url())
         .addConverterFactory(GsonConverterFactory.create())
         .client(okHttpClient)
         .build();

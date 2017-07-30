@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'me.tatarka.retrolambda'
 
 def keystoreProperties = new Properties()
 keystoreProperties.load(new FileInputStream(rootProject.file("keystore.properties")))
@@ -12,7 +13,7 @@ android {
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner 'com.danielkashin.yandexweatherapp_instrumental.testenvironment.testapp.CustomAndroidTestRunner'
     }
     signingConfigs {
         config {
@@ -35,16 +36,18 @@ android {
     }
     buildTypes.each {
         it.buildConfigField 'String', 'WEATHER_API_KEY', keystoreProperties['WeatherApiKey'];
+        it.buildConfigField 'String', 'PLACES_API_KEY', keystoreProperties['PlacesApiKey'];
         it.buildConfigField 'String', 'WEATHER_DATABASE_NAME', keystoreProperties['WeatherDatabaseName'];
         it.buildConfigField 'Integer', 'WEATHER_DATABASE_BUILD_NUMBER', keystoreProperties['WeatherDatabaseBuildNumber'];
+    }
+    compileOptions {
+        targetCompatibility 1.8
+        sourceCompatibility 1.8
     }
 }
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
     // support
     compile 'com.android.support:preference-v7:25.3.1'
     compile 'com.android.support:appcompat-v7:25.3.1'
@@ -64,6 +67,30 @@ dependencies {
     compile 'com.squareup.retrofit2:converter-scalars:2.2.0'
     // android job
     compile 'com.evernote:android-job:1.1.11'
-    // junit
+    //rx
+    compile 'io.reactivex.rxjava2:rxjava:2.0.8'
+    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    compile 'com.jakewharton.rxbinding2:rxbinding:2.0.0'
+    compile 'com.jakewharton.rxbinding2:rxbinding-appcompat-v7:2.0.0'
+    //google-services
+    compile 'com.google.android.gms:play-services-places:11.0.2'
+    // tests
     testCompile 'junit:junit:4.12'
+    testCompile "org.mockito:mockito-core:2.7.22"
+    testCompile "org.assertj:assertj-core:3.6.2"
+    //Android tests
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    androidTestCompile('com.android.support.test.espresso:espresso-contrib:2.2.2') {
+        exclude group: 'com.android.support', module: 'support-annotations'
+        exclude group: 'com.android.support', module: 'support-v4'
+        exclude group: 'com.android.support', module: 'recyclerview-v7'
+        exclude group: 'com.android.support', module: 'appcompat-v7'
+        exclude group: 'com.android.support', module: 'design'
+    }
+    androidTestCompile ('com.android.support.test:runner:0.5', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    androidTestCompile 'com.squareup.okhttp3:mockwebserver:3.6.0'
 }

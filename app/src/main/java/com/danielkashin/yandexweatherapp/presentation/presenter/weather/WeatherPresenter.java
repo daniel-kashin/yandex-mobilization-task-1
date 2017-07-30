@@ -2,6 +2,7 @@ package com.danielkashin.yandexweatherapp.presentation.presenter.weather;
 
 import com.danielkashin.yandexweatherapp.data.entities.repository.Weather;
 import com.danielkashin.yandexweatherapp.data.exceptions.ExceptionBundle;
+import com.danielkashin.yandexweatherapp.domain.use_cases.CachedWeatherUseCases;
 import com.danielkashin.yandexweatherapp.domain.use_cases.GetWeatherUseCase;
 import com.danielkashin.yandexweatherapp.domain.use_cases.RefreshWeatherUseCase;
 import com.danielkashin.yandexweatherapp.presentation.presenter.base.BasePresenter;
@@ -13,18 +14,17 @@ import com.danielkashin.yandexweatherapp.util.ExceptionHelper;
 public class WeatherPresenter extends BasePresenter<WeatherView>
     implements GetWeatherUseCase.Callbacks {
 
-  private Weather cachedWeather;
-  private boolean firstStart = true;
-
   private GetWeatherUseCase getWeatherUseCase;
   private RefreshWeatherUseCase refreshWeatherUseCase;
-
+  private CachedWeatherUseCases cachedWeatherUseCases;
 
   public WeatherPresenter(GetWeatherUseCase getWeatherUseCase,
-                          RefreshWeatherUseCase refreshWeatherUseCase) {
-    ExceptionHelper.checkAllObjectsNonNull(getWeatherUseCase, refreshWeatherUseCase);
+                          RefreshWeatherUseCase refreshWeatherUseCase,
+                          CachedWeatherUseCases cachedWeatherUseCases) {
+    ExceptionHelper.checkAllObjectsNonNull(getWeatherUseCase, refreshWeatherUseCase, cachedWeatherUseCases);
     this.getWeatherUseCase = getWeatherUseCase;
     this.refreshWeatherUseCase = refreshWeatherUseCase;
+    this.cachedWeatherUseCases = cachedWeatherUseCases;
   }
 
   // -------------------------------------- public ------------------------------------------------
@@ -33,24 +33,22 @@ public class WeatherPresenter extends BasePresenter<WeatherView>
     if (getView() != null && !getWeatherUseCase.isRunning()) {
       getView().showLoading();
     }
-    getWeatherUseCase.run(this, "Moscow", false);
+    getWeatherUseCase.run(this, false);
   }
 
   // ------------------------------------- lifecycle ----------------------------------------------
 
   @Override
   protected void onViewDetached() {
-
   }
 
   @Override
   protected void onViewAttached() {
-    if (firstStart) {
-      getWeatherUseCase.run(this, "Moscow", true);
-      firstStart = false;
+      if (cachedWeatherUseCases.cacheExists()) {
+          getView().showWeather(refreshWeatherUseCase.run(cachedWeatherUseCases.get()));
+      } else {
+      getWeatherUseCase.run(this, true);
       getView().showLoading();
-    } else if (cachedWeather != null) {
-      getView().showWeather(refreshWeatherUseCase.run(cachedWeather));
     }
 
     if (getWeatherUseCase.isRunning()) {
@@ -64,7 +62,7 @@ public class WeatherPresenter extends BasePresenter<WeatherView>
   protected void onDestroyed() {
     getWeatherUseCase.dismiss();
     getWeatherUseCase = null;
-    cachedWeather = null;
+    cachedWeatherUseCases = null;
   }
 
   // ---------------------------------- GetWeatherUseCase -----------------------------------------
@@ -75,7 +73,7 @@ public class WeatherPresenter extends BasePresenter<WeatherView>
       getView().showRefreshButton();
     }
 
-    cachedWeather = weather;
+    cachedWeatherUseCases.save(weather);
     if (getView() != null) {
       getView().showWeather(weather);
     }
@@ -87,7 +85,8 @@ public class WeatherPresenter extends BasePresenter<WeatherView>
       getView().showRefreshButton();
     }
 
-    if (exceptionBundle.getReason() == ExceptionBundle.Reason.NETWORK_UNAVAILABLE) {
+    if (exceptionBundle.getReason() == ExceptionBundle.Reason.NETWORK_UNAVAILABLE
+            ||exceptionBundle.getReason() == ExceptionBundle.Reason.API_ERROR) {
       if (getView() != null) {
         getView().showNoInternet();
       }
@@ -104,15 +103,18 @@ public class WeatherPresenter extends BasePresenter<WeatherView>
 
     private final GetWeatherUseCase getWeatherUseCase;
     private final RefreshWeatherUseCase refreshWeatherUseCase;
+    private final CachedWeatherUseCases cachedWeatherUseCases;
 
-    public Factory(GetWeatherUseCase getWeatherUseCase, RefreshWeatherUseCase refreshWeatherUseCase) {
+    public Factory(GetWeatherUseCase getWeatherUseCase, RefreshWeatherUseCase refreshWeatherUseCase,
+                   CachedWeatherUseCases cachedWeatherUseCases) {
       this.getWeatherUseCase = getWeatherUseCase;
       this.refreshWeatherUseCase = refreshWeatherUseCase;
+      this.cachedWeatherUseCases = cachedWeatherUseCases;
     }
 
     @Override
     public WeatherPresenter create() {
-      return new WeatherPresenter(getWeatherUseCase, refreshWeatherUseCase);
+      return new WeatherPresenter(getWeatherUseCase, refreshWeatherUseCase, cachedWeatherUseCases);
     }
   }
 }
