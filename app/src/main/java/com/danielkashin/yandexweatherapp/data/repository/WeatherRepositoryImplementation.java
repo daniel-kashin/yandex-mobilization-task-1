@@ -47,17 +47,17 @@ public class WeatherRepositoryImplementation implements WeatherRepository {
       if (networkManager.getStatus() == NetworkManager.NetworkStatus.DISCONNECTED) {
         throw new ExceptionBundle(ExceptionBundle.Reason.NETWORK_UNAVAILABLE);
       }
+
       Response<NetworkWeather> request = remoteWeatherService
               .getWeather(settingsService.getCurrentCityLatitude(),
-                          settingsService.getCurrentCityLongitude())
-              .execute();
+                          settingsService.getCurrentCityLongitude());
+
       remoteWeatherService.checkNetworkCodesForExceptions(request.code());
       NetworkWeather networkWeather = request.body();
       networkWeather.setTimestamp(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()));
       networkWeather.setName(settingsService.getCurrentCity());
 
-      localWeatherService.saveWeather(weatherConverter.getDatabaseWeather(networkWeather))
-          .executeAsBlocking();
+      localWeatherService.saveWeather(weatherConverter.getDatabaseWeather(networkWeather));
 
       return weatherConverter.getWeather(networkWeather);
     } catch (ExceptionBundle | IOException e) {
@@ -65,7 +65,7 @@ public class WeatherRepositoryImplementation implements WeatherRepository {
         remoteWeatherService.parseException(e);
         return null;
       } else {
-        DatabaseWeather databaseWeather = localWeatherService.getWeather(settingsService.getCurrentCity()).executeAsBlocking();
+        DatabaseWeather databaseWeather = localWeatherService.getWeather(settingsService.getCurrentCity());
         if (databaseWeather == null) {
           throw new ExceptionBundle(ExceptionBundle.Reason.EMPTY_DATA);
         } else {
@@ -96,10 +96,6 @@ public class WeatherRepositoryImplementation implements WeatherRepository {
   }
 
   public static class Factory {
-
-    private Factory() {
-    }
-
     public static WeatherRepository create(RemoteWeatherService remoteWeatherService,
                                            LocalWeatherService localWeatherService,
                                            WeatherConverter weatherConverter,

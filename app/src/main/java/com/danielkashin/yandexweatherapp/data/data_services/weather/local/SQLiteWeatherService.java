@@ -4,8 +4,6 @@ import com.danielkashin.yandexweatherapp.data.contracts.local.WeatherContract;
 import com.danielkashin.yandexweatherapp.data.data_services.base.BaseDatabaseService;
 import com.danielkashin.yandexweatherapp.data.entities.local.DatabaseWeather;
 import com.pushtorefresh.storio.sqlite.StorIOSQLite;
-import com.pushtorefresh.storio.sqlite.operations.get.PreparedGetObject;
-import com.pushtorefresh.storio.sqlite.operations.put.PreparedPutObject;
 import com.pushtorefresh.storio.sqlite.queries.Query;
 
 
@@ -16,7 +14,7 @@ public class SQLiteWeatherService extends BaseDatabaseService implements LocalWe
   }
 
   @Override
-  public PreparedGetObject<DatabaseWeather> getWeather(String city) {
+  public DatabaseWeather getWeather(String city) {
     return getSQLite().get()
         .object(DatabaseWeather.class)
         .withQuery(Query.builder()
@@ -24,14 +22,15 @@ public class SQLiteWeatherService extends BaseDatabaseService implements LocalWe
             .where(WeatherContract.COLUMN_NAME_CITY_NAME + " = ?")
             .whereArgs(city)
             .build())
-        .prepare();
+        .prepare()
+            .executeAsBlocking();
   }
 
   @Override
-  public PreparedPutObject<DatabaseWeather> saveWeather(DatabaseWeather databaseWeather) {
-    return getSQLite().put()
+  public void saveWeather(DatabaseWeather databaseWeather) {
+     getSQLite().put()
         .object(databaseWeather)
-        .prepare();
+        .prepare().executeAsBlocking();
   }
 
 

@@ -23,7 +23,7 @@ public class CachedWeatherUseCases {
         weatherRepository.saveWeatherInCache(weather);
     }
 
-    public boolean status(){
+    public boolean cacheExists(){
         return weatherRepository.checkCacheRelevance();
     }
 }
