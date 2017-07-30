@@ -1,4 +1,4 @@
-package com.danielkashin.yandexweatherapp.data;
+package com.danielkashin.yandexweatherapp_instrumental;
 
 import com.danielkashin.yandexweatherapp.data.entities.local.DatabaseWeather;
 import com.danielkashin.yandexweatherapp.data.entities.remote.NetworkWeather;
@@ -65,7 +65,7 @@ public class TestContract {
         return  new Gson().fromJson(createResponse(), NetworkWeather.class);
     }
 
-    private static String createResponse() {
+    public static String createResponse() {
         return "{\"coord\":{\"lon\":37.62,\"lat\":55.76},\"weather\":[{\"id\":800,\"main\":\"Clear\",\"description\":\"clear sky\",\"icon\":\"01d\"}],\"base\":\"stations\",\"main\":{\"temp\":294.64,\"pressure\":1010,\"humidity\":57,\"temp_min\":293.15,\"temp_max\":297.15},\"visibility\":10000,\"wind\":{\"speed\":4,\"deg\":90},\"clouds\":{\"all\":0},\"dt\":1501230600,\"sys\":{\"type\":1,\"id\":7323,\"message\":0.0065,\"country\":\"RU\",\"sunrise\":1501205285,\"sunset\":1501263763},\"id\":524925,\"name\":\"Moskovskaya Oblast’\",\"cod\":200}";
     }
 }

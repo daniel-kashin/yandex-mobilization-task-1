@@ -3,11 +3,11 @@ package com.danielkashin.yandexweatherapp.data.data_services.weather.remote;
 
 import android.support.annotation.NonNull;
 
-import com.danielkashin.yandexweatherapp.data.constants.Endpoints;
 import com.danielkashin.yandexweatherapp.data.contracts.remote.OpenWeatherMapContract;
 import com.danielkashin.yandexweatherapp.data.data_services.base.BaseRemoteService;
 import com.danielkashin.yandexweatherapp.data.entities.remote.NetworkWeather;
 import com.danielkashin.yandexweatherapp.data.exceptions.ExceptionBundle;
+import com.danielkashin.yandexweatherapp.di.module.ChangeableBaseUrl;
 
 import java.io.IOException;
 import java.net.ConnectException;
@@ -24,8 +24,8 @@ import retrofit2.Retrofit;
 public class OpenWeatherMapService extends BaseRemoteService<OpenWeatherMapContract>
     implements  RemoteWeatherService {
 
-  private OpenWeatherMapService(String apiKey, OkHttpClient okHttpClient) {
-    super(Endpoints.OPEN_WEATHER_MAP_BASE_URL, apiKey, okHttpClient);
+  private OpenWeatherMapService(ChangeableBaseUrl baseUrl, String apiKey, OkHttpClient okHttpClient) {
+    super(baseUrl, apiKey, okHttpClient);
   }
 
   // --------------------------------- RemoteWeatherService --------------------------------------
@@ -73,8 +73,8 @@ public class OpenWeatherMapService extends BaseRemoteService<OpenWeatherMapContr
     private Factory() {
     }
 
-    public static RemoteWeatherService create(String apiKey, OkHttpClient okHttpClient) {
-      return new OpenWeatherMapService(apiKey, okHttpClient);
+    public static RemoteWeatherService create(ChangeableBaseUrl baseUrl, String apiKey, OkHttpClient okHttpClient) {
+      return new OpenWeatherMapService(baseUrl, apiKey, okHttpClient);
     }
   }
 }

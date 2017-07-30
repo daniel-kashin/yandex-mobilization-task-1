@@ -27,8 +27,10 @@ public class GetWeatherUseCase {
   }
 
   public void dismiss() {
-    asyncTaskResponse.cancel(false);
-    asyncTaskResponse = null;
+    if (asyncTaskResponse != null) { //app crashes in onDestroy with NPE
+      asyncTaskResponse.cancel(false);
+      asyncTaskResponse = null;
+    }
   }
 
   public void run(final Callbacks callbacks, final boolean firstStart) {
