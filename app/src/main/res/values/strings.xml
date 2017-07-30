@@ -136,6 +136,8 @@
     <string name="id_960">storm</string>
     <string name="id_961">violent storm</string>
     <string name="id_962">hurricane</string>
+    <string name="city_icon_description">city_icon</string>
+    <string name="select_city">Выбор города</string>
 
 
 </resources>

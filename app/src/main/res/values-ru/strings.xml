@@ -134,5 +134,6 @@
     <string name="id_960">шторм</string>
     <string name="id_961">сильный шторм</string>
     <string name="id_962">ураган</string>
+    <string name="main_drawer_select">Выбор города</string>
 
 </resources>
