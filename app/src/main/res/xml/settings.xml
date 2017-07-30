@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <CheckBoxPreference
+        android:id="@+id/settings_degree"
         android:key="fahrenheit_degree"
         android:title="@string/fahrenheit_degree"/>
 
@@ -13,7 +14,7 @@
 
     <Preference
         android:key="current_city"
-        android:title="Select city"
+        android:title="@string/select_city"
         android:summary="@string/current_city"
         />
 </PreferenceScreen>

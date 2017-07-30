@@ -85,7 +85,8 @@ public class WeatherPresenter extends BasePresenter<WeatherView>
       getView().showRefreshButton();
     }
 
-    if (exceptionBundle.getReason() == ExceptionBundle.Reason.NETWORK_UNAVAILABLE) {
+    if (exceptionBundle.getReason() == ExceptionBundle.Reason.NETWORK_UNAVAILABLE
+            ||exceptionBundle.getReason() == ExceptionBundle.Reason.API_ERROR) {
       if (getView() != null) {
         getView().showNoInternet();
       }

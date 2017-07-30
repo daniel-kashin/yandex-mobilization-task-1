@@ -1,4 +1,4 @@
-package com.danielkashin.yandexweatherapp_instrumental.testenvironment.rules;
+package com.danielkashin.yandexweatherapp_instrumental.rules;
 
 import android.support.annotation.NonNull;
 

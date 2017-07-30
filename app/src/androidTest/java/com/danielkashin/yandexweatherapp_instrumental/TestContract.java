@@ -15,31 +15,31 @@ public class TestContract {
     public static final Weather.TemperatureType EXPECTED_TEMPERATURE_TYPE_FAR = Weather.TemperatureType.Fahrenheit;
 
     public static final String EXPECTED_TEST_CITY = "Moskovskaya Oblast’";
-    public  static final String ANOTHER_TEST_CITY = "Saint-Peterburg";
-    private static final long EXPECTED_TIMESTAMP = 1501230600;
-    private static final String EXPECTED_DATE = "28/07 11:30";
-    private static final int EXPECTED_CONDITION_ID = 800;
-    private static final String EXPECTED_DESCRIPTION = EXPECTED_RES_STR;
-    private static final int EXPECTED_CONDTIDION_ICON_ID = EXPECTED_RES_ID;
-    private static final int EXPECTED_MAIN_TEMPERATURE_FAR = 70;
-    private static final int EXPECTED_MIN_TEMPERATURE_FAR = 67;
-    private static final int EXPECTED_MAX_TEMPERATURE_FAR = 75;
-    private static final int EXPECTED_MAIN_TEMPERATURE_CEL = 21;
-    private static final int EXPECTED_MIN_TEMPERATURE_CEL = 19;
-    private static final int EXPECTED_MAX_TEMPERATURE_CEL = 24;
-    private static final String EXPECTED_WIND_SUMMARY = "4.0 "+ EXPECTED_RES_STR;
-    private static final int EXPECTED_HUMIDITY = 57;
-    private static final int EXPECTED_PRESSURE = 757;
-    private static final int EXPECTED_CLOUDINESS = 0;
+    public static final String ANOTHER_TEST_CITY = "Saint-Peterburg";
+    public static final long EXPECTED_TIMESTAMP = 1501230600;
+    public static final String EXPECTED_DATE = "28/07 11:30";
+    public static final int EXPECTED_CONDITION_ID = 800;
+    public static final String EXPECTED_DESCRIPTION = EXPECTED_RES_STR;
+    public static final int EXPECTED_CONDTIDION_ICON_ID = EXPECTED_RES_ID;
+    public static final int EXPECTED_MAIN_TEMPERATURE_FAR = 70;
+    public static final int EXPECTED_MIN_TEMPERATURE_FAR = 67;
+    public static final int EXPECTED_MAX_TEMPERATURE_FAR = 75;
+    public static final int EXPECTED_MAIN_TEMPERATURE_CEL = 21;
+    public static final int EXPECTED_MIN_TEMPERATURE_CEL = 19;
+    public static final int EXPECTED_MAX_TEMPERATURE_CEL = 24;
+    public static final String EXPECTED_WIND_SUMMARY = "4.0 "+ EXPECTED_RES_STR;
+    public static final int EXPECTED_HUMIDITY = 57;
+    public static final int EXPECTED_PRESSURE = 757;
+    public static final int EXPECTED_CLOUDINESS = 0;
 
-    private static final double DB_TEMP_MAIN = 294.64;
-    private static final double DB_TEMP_MAX = 297.15;
-    private static final double DB_TEMP_MIN = 293.15;
-    private static final int DB_PRESSURE = 1010;
-    private static final Long EXPECTED_ID = null;
-    private static final String EXPECTED_CONDITION_ICON_NAME = "01d";
-    private static final long EXPECTED_WIND_SPEED = 4;
-    private static final long EXPECTED_WIND_ANGLE = 90;
+    public static final double DB_TEMP_MAIN = 294.64;
+    public static final double DB_TEMP_MAX = 297.15;
+    public static final double DB_TEMP_MIN = 293.15;
+    public static final int DB_PRESSURE = 1010;
+    public static final Long EXPECTED_ID = null;
+    public static final String EXPECTED_CONDITION_ICON_NAME = "01d";
+    public static final long EXPECTED_WIND_SPEED = 4;
+    public static final long EXPECTED_WIND_ANGLE = 90;
 
     public static Weather createWeatherFar(){
         return new Weather(EXPECTED_TEST_CITY,EXPECTED_TIMESTAMP,EXPECTED_DATE, EXPECTED_CONDITION_ID,

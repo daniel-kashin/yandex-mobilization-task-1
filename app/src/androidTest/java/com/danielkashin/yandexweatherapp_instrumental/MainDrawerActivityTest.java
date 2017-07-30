@@ -1,19 +1,21 @@
 package com.danielkashin.yandexweatherapp_instrumental;
 
 import android.support.annotation.NonNull;
-import android.support.test.espresso.contrib.DrawerActions;
-import android.support.test.espresso.contrib.NavigationViewActions;
-import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import android.util.Log;
 
 import com.danielkashin.yandexweatherapp.R;
+import com.danielkashin.yandexweatherapp.presentation.view.application.YandexWeatherApp;
 import com.danielkashin.yandexweatherapp.presentation.view.main_drawer.MainDrawerActivity;
-import com.danielkashin.yandexweatherapp_instrumental.testenvironment.matchers.ToastMatcher;
-import com.danielkashin.yandexweatherapp_instrumental.testenvironment.rules.MockWebServerRule;
-import com.danielkashin.yandexweatherapp_instrumental.testenvironment.rules.NeedsMockWebServer;
+import com.danielkashin.yandexweatherapp_instrumental.actions.CustomDrawerActions;
+import com.danielkashin.yandexweatherapp_instrumental.actions.SettingsActions;
+import com.danielkashin.yandexweatherapp_instrumental.actions.WeatherActions;
+import com.danielkashin.yandexweatherapp_instrumental.rules.AsyncTaskRule;
+import com.danielkashin.yandexweatherapp_instrumental.rules.MockWebServerRule;
+import com.danielkashin.yandexweatherapp_instrumental.rules.NeedsMockWebServer;
+import com.danielkashin.yandexweatherapp_instrumental.testenvironment.TestUtils;
 
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.RuleChain;
@@ -24,11 +26,10 @@ import okhttp3.mockwebserver.MockWebServer;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.Espresso.pressBack;
-import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static com.danielkashin.yandexweatherapp.R.string.degree;
 
 /**
  *
@@ -36,59 +37,107 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 @RunWith(AndroidJUnit4.class)
 public class MainDrawerActivityTest {
 
-    ActivityTestRule<MainDrawerActivity> activityRule =  new ActivityTestRule<>(MainDrawerActivity.class);
-
+    private String expectedTempCel;
+    private String expectedTempFar;
+    private String settingDegree;
+    private String settingInterval;
+    private String settingCity;
+    private String errorInternet;
+    private String[] periods;
     @Rule
     public RuleChain rules = RuleChain.emptyRuleChain()
             .around(new MockWebServerRule(this))
-            .around(activityRule);
+            .around(new AsyncTaskRule())
+            .around(new ActivityTestRule<>(MainDrawerActivity.class));
+
+    @Before
+    public void setUp() throws Exception {
+        YandexWeatherApp app = TestUtils.app();
+        expectedTempCel = TestContract.EXPECTED_MAIN_TEMPERATURE_CEL+app.getString(degree);
+        expectedTempFar = TestContract.EXPECTED_MAIN_TEMPERATURE_FAR+app.getString(degree);
+        settingDegree = app.getString(R.string.fahrenheit_degree);
+        settingInterval = app.getString(R.string.refresh_interval);
+        settingCity = app.getString(R.string.select_city);
+        errorInternet = app.getString(R.string.no_internet_connection);
+        periods = app.getResources().getStringArray(R.array.refresh_intervals_identifiers);
+    }
 
     @Test
     public void testDrawerNavigation(){
-        onView(ViewMatchers.withId(R.id.drawer_layout)).perform(DrawerActions.open());
-        onView(withId(R.id.navigation_view)).perform(NavigationViewActions.navigateTo(R.id.navigation_settings));
-        pressBack();
+        CustomDrawerActions drawerActions = new CustomDrawerActions();
 
-        onView(withId(R.id.drawer_layout)).perform(DrawerActions.open());
-        onView(withId(R.id.navigation_view)).perform(NavigationViewActions.navigateTo(R.id.navigation_about));
+        drawerActions.navigateToSettings();
         pressBack();
-
-        onView(withId(R.id.drawer_layout)).perform(DrawerActions.open());
-        onView(withId(R.id.navigation_view)).perform(NavigationViewActions.navigateTo(R.id.navigation_weather));
+        drawerActions.navigateToAbout();
+        pressBack();
     }
 
     @Test
     @NeedsMockWebServer(setupMethod = "successResponse_setupMockWebServer")
     public void successResponse(){
-        onView(withId(R.id.image_refresh)).perform(click());
-        onView(withId(R.id.text_main_temperature)).check(matches(isDisplayed()));
-    }
+        WeatherActions weatherActions = new WeatherActions();
 
-    public void successResponse_setupMockWebServer(@NonNull MockWebServer mockWebServer){
-        Log.d("myLogs", "successResponse_setupMockWebServer: ");
-        mockWebServer.enqueue(new MockResponse().setBody(TestContract.createResponse()));
-        Log.d("myLogs", "successResponse_setupMockWebServer: " + mockWebServer.getRequestCount());
+        weatherActions.updateWeather();
+        weatherActions.checkWeatherIsUpdated(expectedTempCel);
     }
 
     @Test
     @NeedsMockWebServer(setupMethod = "errorResponse_setupMockWebServer")
     public void errorResponse(){
-        onView(withId(R.id.image_refresh)).perform(click());
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        checkToast();
+        WeatherActions weatherActions = new WeatherActions();
+        weatherActions.updateWeather();
+        weatherActions.checkToast(errorInternet);
+    }
+
+    @Test
+    @NeedsMockWebServer(setupMethod = "updateCelInFarResponse_setupMockWebServer")
+    public void updateCelInFarResponse(){
+        CustomDrawerActions drawerActions = new CustomDrawerActions();
+        SettingsActions settingsActions = new SettingsActions();
+
+        drawerActions.navigateToSettings();
+        freezeThread(1000);
+        settingsActions.clickOnSetting(settingDegree);
+
+        pressBack();
+
+        onView(withId(R.id.text_main_temperature)).check(matches(withText(expectedTempFar)));
+    }
+
+    @Test
+    public void testReschedule(){
+        CustomDrawerActions drawerActions = new CustomDrawerActions();
+        SettingsActions settingsActions = new SettingsActions();
+
+        drawerActions.navigateToSettings();
+        freezeThread(1000);
+        settingsActions.clickOnSetting(settingInterval);
+        settingsActions.clickOnInterval(periods[1]);
+        settingsActions.clickOnSetting(settingInterval);
+        settingsActions.checkInterval(periods[1]);
+        pressBack();
+
+    }
+
+    public void successResponse_setupMockWebServer(@NonNull MockWebServer mockWebServer){
+        mockWebServer.enqueue(new MockResponse().setBody(TestContract.createResponse())); //for first launch
+        mockWebServer.enqueue(new MockResponse().setBody(TestContract.createResponse())); //for update
     }
 
     public void errorResponse_setupMockWebServer(@NonNull MockWebServer mockWebServer){
-        mockWebServer.enqueue(new MockResponse().setBody("HTTP/1.1 500 Not today"));
-        Log.d("myLogs", "errorResponse_setupMockWebServer: " + mockWebServer.getRequestCount());
+        mockWebServer.enqueue(new MockResponse().setResponseCode(404));
     }
 
-    public void checkToast() {
-        onView(withText(R.string.no_internet_connection)).inRoot(new ToastMatcher())
-                .check(matches(isDisplayed()));
+    public void updateCelInFarResponse_setupMockWebServer(@NonNull MockWebServer mockWebServer){
+        mockWebServer.enqueue(new MockResponse().setBody(TestContract.createResponse()));
+        mockWebServer.enqueue(new MockResponse().setBody(TestContract.createResponse()));
+    }
+    //When Idling is not available
+    private void freezeThread(int milis) {
+        try {
+            Thread.sleep(milis);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }
